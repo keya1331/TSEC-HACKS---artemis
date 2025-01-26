@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Artemis.",
-  description: "Team Artemis @ TSEC Hacks",
+  description: "Created by Team Artemis.",
 };
 
 export default function RootLayout({ children }) {
