@@ -8,31 +8,20 @@ export async function POST(req) {
   try {
     // Parse the request body
     const body = await req.json();
-    const { name, email, mobileno, password, aadharno, captchaToken, captchaInput } = body;
+    const { name, email, mobileno, password, aadharno } = body;
 
     // Connect to the database
     await dbConnect();
 
     // Validate input fields
-    if (!name || !email || !mobileno || !password || !aadharno || !captchaToken || !captchaInput) {
+    if (!name || !email || !mobileno || !password || !aadharno) {
       return new Response(
         JSON.stringify({ message: 'All fields are required', success: false }),
         { status: 400 }
       );
     }
 
-    // Step 1: Verify CAPTCHA
-    global.captchaStore = global.captchaStore || {}; // Initialize CAPTCHA store
-    const storedCaptcha = global.captchaStore[captchaToken];
-
-    if (!storedCaptcha || storedCaptcha !== captchaInput) {
-      return new Response(
-        JSON.stringify({ message: 'Invalid CAPTCHA', success: false }),
-        { status: 400 }
-      );
-    }
-
-    // Step 2: Check if user already exists
+    // Step 1: Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return new Response(
@@ -41,14 +30,14 @@ export async function POST(req) {
       );
     }
 
-    // Step 3: Hash the password
+    // Step 2: Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Step 4: Generate a verification token and expiry time
+    // Step 3: Generate a verification token and expiry time
     const verificationToken = crypto.randomBytes(32).toString('hex');
     const verificationExpires = Date.now() + 60 * 60 * 1000; // Token valid for 1 hour
 
-    // Step 5: Create a new user (initially unverified)
+    // Step 4: Create a new user (initially unverified)
     const user = await User.create({
       name,
       email,
@@ -60,7 +49,7 @@ export async function POST(req) {
       verificationExpires,
     });
 
-    // Step 6: Send the verification email
+    // Step 5: Send the verification email
     const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email?token=${verificationToken}&email=${email}`;
     await sendEmail({
       to: email,
@@ -71,7 +60,7 @@ export async function POST(req) {
              <a href="${verificationLink}">Verify Email</a>`,
     });
 
-    // Step 7: Return success response
+    // Step 6: Return success response
     return new Response(
       JSON.stringify({
         message: 'User created successfully. Please check your email to verify your account.',

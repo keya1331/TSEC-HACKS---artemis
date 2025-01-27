@@ -13,36 +13,13 @@ function SignupPage() {
     password: "",
     repassword: "",
     aadharno: "",
-    captchaToken: "", // Store CAPTCHA token
-    captchaInput: "", // Store user input for CAPTCHA
   });
-  const [captchaImage, setCaptchaImage] = useState(""); // Store CAPTCHA image
   const [errors, setErrors] = useState({});
   const [debouncedData, setDebouncedData] = useState(formData);
   const [loading, setLoading] = useState(false); // Track loading state
   const [otp, setOtp] = useState(""); // Store OTP input
   const [isOtpSent, setIsOtpSent] = useState(false); // Track if OTP is sent
   const [otpError, setOtpError] = useState(""); // Track OTP errors
-
-  // Fetch CAPTCHA image and token when the component mounts
-  useEffect(() => {
-    const fetchCaptcha = async () => {
-      try {
-        const response = await axios.get("/api/auth/captcha");
-        const { captchaImage, captchaToken } = response.data;
-        setCaptchaImage(`data:image/png;base64,${captchaImage}`);
-        setFormData((prevData) => ({
-          ...prevData,
-          captchaToken,
-        }));
-      } catch (error) {
-        console.error("Error fetching CAPTCHA:", error);
-      }
-    };
-
-    fetchCaptcha();
-  }, []);
-
   const validateForm = (data) => {
     const newErrors = {};
     const emailRegex = /^\S+@\S+\.\S+$/;
@@ -59,7 +36,6 @@ function SignupPage() {
       newErrors.repassword = "Passwords do not match";
     if (!aadharRegex.test(data.aadharno))
       newErrors.aadharno = "Invalid 12-digit Aadhar number";
-    if (!data.captchaInput) newErrors.captcha = "Please complete the CAPTCHA"; // CAPTCHA validation
 
     return newErrors;
   };
@@ -78,11 +54,6 @@ function SignupPage() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setDebouncedData({ ...debouncedData, [name]: value });
-  };
-
-  const handleCaptchaChange = (e) => {
-    const { value } = e.target;
-    setFormData({ ...formData, captchaInput: value });
   };
 
   const handleOtpChange = (e) => {
@@ -148,8 +119,6 @@ function SignupPage() {
             password: "",
             repassword: "",
             aadharno: "",
-            captchaToken: "",
-            captchaInput: "", // Clear CAPTCHA input
           });
           setErrors({});
           setIsOtpSent(false);
@@ -310,59 +279,6 @@ function SignupPage() {
               />
               {errors.repassword && (
                 <p className="text-red-500 text-xs mt-2">{errors.repassword}</p>
-              )}
-            </div>
-
-            {/* CAPTCHA */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                CAPTCHA
-              </label>
-              <div className="flex items-center justify-between mb-3">
-                {/* CAPTCHA Image */}
-                <div className="flex justify-between w-3/4">
-                  <img
-                    src={captchaImage}
-                    alt="Captcha"
-                    className="overflow-hidden border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      // Refresh CAPTCHA
-                      e.preventDefault();
-                      const fetchCaptcha = async () => {
-                        const response = await axios.get("/api/auth/captcha");
-                        const { captchaImage, captchaToken } = response.data;
-                        setCaptchaImage(
-                          `data:image/png;base64,${captchaImage}`
-                        );
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          captchaToken,
-                        }));
-                      };
-                      fetchCaptcha();
-                    }}
-                    className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                  >
-                    Refresh
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                {/* CAPTCHA Input */}
-                <input
-                  type="text"
-                  name="captchaInput"
-                  value={formData.captchaInput}
-                  onChange={handleCaptchaChange}
-                  className="w-2/3 px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                  placeholder="Enter CAPTCHA"
-                />
-              </div>
-              {errors.captcha && (
-                <p className="text-red-500 text-xs mt-2">{errors.captcha}</p>
               )}
             </div>
 
