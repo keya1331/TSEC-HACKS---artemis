@@ -5,3 +5,7 @@ numpy==1.21.2
 scikit-learn==0.24.2
 joblib==1.0.1
 pickle
+tensorflow
+transformers==4.45.2
+speechrecognition==3.10.4
+pydub==0.25.1
