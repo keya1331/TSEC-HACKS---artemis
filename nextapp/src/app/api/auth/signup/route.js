@@ -2,7 +2,6 @@ import dbConnect from '@/lib/db'; // Adjust the path to your dbConnect file
 import User from '@/models/user'; // Adjust the path to your User model
 import bcrypt from 'bcrypt';
 import { sendEmail } from '@/utils/sendEmail'; // Import your email utility
-import crypto from 'crypto';
 
 export async function POST(req) {
   try {
@@ -33,9 +32,8 @@ export async function POST(req) {
     // Step 2: Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Step 3: Generate a verification token and expiry time
-    const verificationToken = crypto.randomBytes(32).toString('hex');
-    const verificationExpires = Date.now() + 60 * 60 * 1000; // Token valid for 1 hour
+    // Step 3: Generate an OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     // Step 4: Create a new user (initially unverified)
     const user = await User.create({
@@ -45,25 +43,23 @@ export async function POST(req) {
       password: hashedPassword,
       aadharno,
       isVerified: false, // Add an `isVerified` field in your User model
-      verificationToken,
-      verificationExpires,
+      otp,
+      otpExpires: Date.now() + 10 * 60 * 1000, // OTP valid for 10 minutes
     });
 
-    // Step 5: Send the verification email
-    const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email?token=${verificationToken}&email=${email}`;
+    // Step 5: Send the OTP email
     await sendEmail({
       to: email,
-      subject: 'Email Verification',
-      text: `Hello ${name},\n\nPlease verify your email by clicking the link below:\n${verificationLink}`,
+      subject: 'Email Verification OTP',
+      text: `Hello ${name},\n\nYour OTP for email verification is ${otp}.`,
       html: `<p>Hello ${name},</p>
-             <p>Please verify your email by clicking the link below:</p>
-             <a href="${verificationLink}">Verify Email</a>`,
+             <p>Your OTP for email verification is <strong>${otp}</strong>.</p>`,
     });
 
     // Step 6: Return success response
     return new Response(
       JSON.stringify({
-        message: 'User created successfully. Please check your email to verify your account.',
+        message: 'User created successfully. Please check your email for the OTP to verify your account.',
         userId: user._id,
         success: true
       }),

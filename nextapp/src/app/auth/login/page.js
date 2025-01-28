@@ -8,37 +8,17 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
-    captchaInput: "",
   });
 
-  const [captchaImage, setCaptchaImage] = useState("");
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({
     identifier: false,
     password: false,
-    captchaInput: false,
   });
 
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otpError, setOtpError] = useState('');
-
-  // Fetch CAPTCHA on component mount
-  useEffect(() => {
-    fetchCaptcha();
-  }, []);
-
-  const fetchCaptcha = async () => {
-    try {
-      const response = await fetch("/api/auth/captcha");
-      const data = await response.json();
-      setCaptchaImage(data.captchaImage);
-      localStorage.setItem("captchaToken", data.captchaToken); // Save token for validation
-    } catch (error) {
-      console.error("Failed to fetch CAPTCHA:", error);
-      toast.error("Unable to load CAPTCHA. Please try again.");
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,10 +49,6 @@ export default function LoginPage() {
       newErrors.password = "Password is required.";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long.";
-    }
-    
-    if (!formData.captchaInput) {
-      newErrors.captchaInput = "CAPTCHA is required.";
     }
     
     setErrors(newErrors);
@@ -132,10 +108,7 @@ export default function LoginPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            ...formData,
-            captchaToken: localStorage.getItem("captchaToken"), // Send token for verification
-          }),
+          body: JSON.stringify(formData),
         });
         const data = await response.json();
         toast.dismiss();
@@ -143,15 +116,13 @@ export default function LoginPage() {
           sessionStorage.setItem('user-auth-token', data.token);
           toast.success("Login successful!");
           // Redirect to dashboard
-          router.push("/u/dashboard");
+          router.push("/");
         } else {
           toast.error(data.message);
-          fetchCaptcha(); // Refresh CAPTCHA on failure
         }
       } catch (error) {
         toast.dismiss();
         toast.error("Login failed. Please try again.");
-        fetchCaptcha(); // Refresh CAPTCHA on error
       }
     } else {
       setOtpError('Invalid OTP. Please try again.');
@@ -191,37 +162,6 @@ export default function LoginPage() {
               placeholder="Enter Password"
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-          </div>
-
-          {/* CAPTCHA */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Captcha</label>
-            <div className="flex items-center justify-between">
-              <img
-                src={`data:image/png;base64,${captchaImage}`}
-                alt="CAPTCHA"
-                className="border rounded-lg"
-              />
-              <button
-                type="button"
-                onClick={fetchCaptcha}
-                className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
-                Refresh
-              </button>
-            </div>
-            <input
-              type="text"
-              name="captchaInput"
-              value={formData.captchaInput}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Enter CAPTCHA"
-            />
-            {errors.captchaInput && (
-              <p className="text-red-500 text-xs mt-1">{errors.captchaInput}</p>
-            )}
           </div>
 
           {/* Submit Button */}

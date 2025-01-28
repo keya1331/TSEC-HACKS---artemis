@@ -5,26 +5,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   try {
-    const { identifier, password, captchaInput, captchaToken } = await req.json();
-
-    // Validate CAPTCHA
-    if (!global.captchaStore || !global.captchaStore[captchaToken]) {
-      return new Response(
-        JSON.stringify({ message: "Invalid or expired CAPTCHA.", success: false }),
-        { status: 400 }
-      );
-    }
-
-    if (global.captchaStore[captchaToken] !== captchaInput) {
-      delete global.captchaStore[captchaToken]; // Clear the token after one attempt
-      return new Response(
-        JSON.stringify({ message: "Incorrect CAPTCHA.", success: false }),
-        { status: 400 }
-      );
-    }
-
-    // Clear CAPTCHA after validation
-    delete global.captchaStore[captchaToken];
+    const { identifier, password } = await req.json();
 
     // Validate user credentials
     await dbConnect();
