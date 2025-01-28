@@ -1,7 +1,7 @@
-import Chatbot from "./components/common/Chatbot";
 
 "use client";
 
+import Chatbot from "./components/common/Chatbot";
 import { useState, useEffect } from "react";
 import Loader from "./components/common/Loader";
 import { motion } from "framer-motion";
@@ -105,6 +105,7 @@ export default function Home() {
           </a>
         </motion.div>
       </div>
+      <Chatbot />
     </>
   );
 }
