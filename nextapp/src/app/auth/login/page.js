@@ -159,10 +159,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-200">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-sm">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Login</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="min-h-screen flex items-center justify-center  bg-teal-800">
+      <div className="bg-white p-10 rounded-lg shadow-2xl w-full max-w-md">
+        <h2 className="text-3xl font-semibold text-gray-800 text-center mb-8">Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-8">
           {/* Identifier Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Email or Mobile</label>
@@ -172,7 +172,7 @@ export default function LoginPage() {
               value={formData.identifier}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
               placeholder="Enter Email or Mobile Number"
             />
             {errors.identifier && <p className="text-red-500 text-xs mt-1">{errors.identifier}</p>}
@@ -187,7 +187,7 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
               placeholder="Enter Password"
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
@@ -205,7 +205,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={fetchCaptcha}
-                className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className="ml-2 px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
               >
                 Refresh
               </button>
@@ -216,19 +216,17 @@ export default function LoginPage() {
               value={formData.captchaInput}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
               placeholder="Enter CAPTCHA"
             />
-            {errors.captchaInput && (
-              <p className="text-red-500 text-xs mt-1">{errors.captchaInput}</p>
-            )}
+            {errors.captchaInput && <p className="text-red-500 text-xs mt-1">{errors.captchaInput}</p>}
           </div>
 
           {/* Submit Button */}
           {!isOtpSent && (
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-3 px-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               Send OTP
             </button>
@@ -236,7 +234,7 @@ export default function LoginPage() {
         </form>
 
         {isOtpSent && (
-          <form onSubmit={handleOtpSubmit} className="space-y-6 mt-6">
+          <form onSubmit={handleOtpSubmit} className="space-y-6 mt-8">
             <div>
               <label className="block text-sm font-medium text-gray-700">Enter OTP</label>
               <input
@@ -244,28 +242,28 @@ export default function LoginPage() {
                 name="otp"
                 value={otp}
                 onChange={handleOtpChange}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 placeholder="Enter OTP"
               />
               {otpError && <p className="text-red-500 text-xs mt-1">{otpError}</p>}
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-3 px-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               Verify OTP
             </button>
           </form>
         )}
 
-        <p className="text-center m-3">
+        <p className="text-center mt-6 text-sm">
           Don't have an account?{" "}
-          <Link href={"/auth/signup"} className="text-blue-600">
+          <Link href="/auth/signup" className="text-teal-600 hover:text-teal-700">
             Sign Up
           </Link>
         </p>
-        <p className="text-center m-3">
-          <Link href={"/auth/forgot-password"} className="text-blue-600">
+        <p className="text-center mt-2 text-sm">
+          <Link href="/auth/forgot-password" className="text-teal-600 hover:text-teal-700">
             Forgot Password?
           </Link>
         </p>
