@@ -1,3 +1,5 @@
+import Chatbot from "./components/common/Chatbot";
+
 "use client";
 
 import { useState, useEffect } from "react";
