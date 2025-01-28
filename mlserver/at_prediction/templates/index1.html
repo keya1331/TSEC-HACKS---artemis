@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English to Hindi Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>English to Hindi Converter</h2>
+    <form action="/convert" method="POST">
+        <label for="text">Enter English Text:</label>
+        <textarea id="text" name="text" rows="4" placeholder="Type your English text here and type small sentences..."></textarea>
+        <input type="submit" value="Convert">
+    </form>
+    <h2>Converted Text:</h2>
+    <p id="translated_text">{{ translated_text }}</p>
+</div>
+
+</body>
+</html>

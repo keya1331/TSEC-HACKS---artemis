@@ -16,10 +16,11 @@ function SignupPage() {
   });
   const [errors, setErrors] = useState({});
   const [debouncedData, setDebouncedData] = useState(formData);
-  const [loading, setLoading] = useState(false); // Track loading state
-  const [otp, setOtp] = useState(""); // Store OTP input
-  const [isOtpSent, setIsOtpSent] = useState(false); // Track if OTP is sent
-  const [otpError, setOtpError] = useState(""); // Track OTP errors
+  const [loading, setLoading] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [otpError, setOtpError] = useState("");
+
   const validateForm = (data) => {
     const newErrors = {};
     const emailRegex = /^\S+@\S+\.\S+$/;
@@ -106,7 +107,7 @@ function SignupPage() {
 
     const finalErrors = validateForm(formData);
     if (Object.keys(finalErrors).length === 0) {
-      setLoading(true); // Start loading
+      setLoading(true);
       toast.loading("Creating account...", { id: "signup" });
       try {
         const response = await axios.post("/api/auth/signup", formData);
@@ -133,7 +134,7 @@ function SignupPage() {
           { id: "signup" }
         );
       } finally {
-        setLoading(false); // End loading
+        setLoading(false);
       }
     } else {
       setErrors(finalErrors);
@@ -142,28 +143,28 @@ function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-blue-100 px-4">
-      <div className="container max-w-5xl bg-white rounded-xl shadow-lg flex flex-row overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-teal-800 px-4">
+      <div className="container max-w-4xl bg-white rounded-lg shadow-xl flex flex-col md:flex-row overflow-hidden">
         {/* Left Section */}
-        <div className="bg-gradient-to-br from-blue-700 to-blue-800 text-white p-8 md:p-10 flex-1 flex flex-col justify-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-            Welcome to the Portal!
+        <div className="bg-teal-700 text-white p-8 md:p-10 flex-1 flex flex-col justify-center">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">
+            Empowering Communities with Access to Services
           </h2>
-          <p className="text-base md:text-lg leading-relaxed mb-6">
-            Register to gain access to all government services.
+          <p className="text-lg md:text-xl leading-relaxed mb-6">
+            Join us to connect with essential government services and make a difference in your community.
           </p>
           <ul className="space-y-3">
             <li className="flex items-start">
               <span className="inline-block w-3.5 h-3.5 bg-white rounded-full mr-3 mt-1"></span>
-              <p>Secure access to official services</p>
+              <p>Access to government services at your fingertips</p>
             </li>
             <li className="flex items-start">
               <span className="inline-block w-3.5 h-3.5 bg-white rounded-full mr-3 mt-1"></span>
-              <p>Easy-to-use interface</p>
+              <p>Simple and secure registration</p>
             </li>
             <li className="flex items-start">
               <span className="inline-block w-3.5 h-3.5 bg-white rounded-full mr-3 mt-1"></span>
-              <p>Fast and reliable support</p>
+              <p>We care for your privacy and security</p>
             </li>
           </ul>
         </div>
@@ -171,134 +172,92 @@ function SignupPage() {
         {/* Right Section */}
         <div className="p-6 md:p-8 flex-1">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 text-center">
-            Sign Up
+            Sign Up for a Better Future
           </h2>
           <form onSubmit={isOtpSent ? handleSubmit : handleGetOtp} className="space-y-5">
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Full Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 placeholder="John Doe"
               />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-2">{errors.name}</p>
-              )}
+              {errors.name && <p className="text-red-500 text-xs mt-2">{errors.name}</p>}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Email Address</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 placeholder="example@example.com"
               />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-2">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email}</p>}
             </div>
 
             {/* Mobile Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Mobile Number
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
               <input
                 type="text"
                 name="mobileno"
                 value={formData.mobileno}
                 onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 placeholder="1234567890"
               />
-              {errors.mobileno && (
-                <p className="text-red-500 text-xs mt-2">{errors.mobileno}</p>
-              )}
+              {errors.mobileno && <p className="text-red-500 text-xs mt-2">{errors.mobileno}</p>}
             </div>
-
-            {/* Aadhaar Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Aadhaar Number
-              </label>
-              <input
-                type="text"
-                name="aadharno"
-                value={formData.aadharno}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                placeholder="1234567890"
-              />
-              {errors.aadharno && (
-                <p className="text-red-500 text-xs mt-2">{errors.aadharno}</p>
-              )}
-            </div>
-
+            
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Password</label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 placeholder="********"
               />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-2">{errors.password}</p>
-              )}
+              {errors.password && <p className="text-red-500 text-xs mt-2">{errors.password}</p>}
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
               <input
                 type="password"
                 name="repassword"
                 value={formData.repassword}
                 onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 placeholder="********"
               />
-              {errors.repassword && (
-                <p className="text-red-500 text-xs mt-2">{errors.repassword}</p>
-              )}
+              {errors.repassword && <p className="text-red-500 text-xs mt-2">{errors.repassword}</p>}
             </div>
 
             {/* OTP Input */}
             {isOtpSent && (
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Enter OTP
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Enter OTP</label>
                 <input
                   type="text"
                   name="otp"
                   value={otp}
                   onChange={handleOtpChange}
-                  className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
                   placeholder="Enter OTP"
                 />
-                {otpError && (
-                  <p className="text-red-500 text-xs mt-2">{otpError}</p>
-                )}
+                {otpError && <p className="text-red-500 text-xs mt-2">{otpError}</p>}
               </div>
             )}
 
@@ -306,8 +265,8 @@ function SignupPage() {
             <button
               type="submit"
               className={`w-full py-2 px-4 rounded-lg font-semibold text-white ${
-                loading ? "bg-gray-500" : "bg-blue-600"
-              } hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none`}
+                loading ? "bg-teal-400" : "bg-teal-600"
+              } hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 focus:outline-none`}
               disabled={loading}
             >
               {loading ? "Signing up..." : isOtpSent ? "Sign Up" : "Get OTP"}

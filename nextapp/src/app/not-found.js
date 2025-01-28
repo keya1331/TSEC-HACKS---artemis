@@ -1,18 +1,30 @@
-import React from 'react';
-import Link from 'next/link';
+"use client";
+
+import React from "react";
+import Link from "next/link";
 
 function NotFound() {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-100 px-4">
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-500 to-teal-900 px-4">
       <div className="text-center">
-        <h1 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4">404</h1>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-600 mb-8">Page Not Found</h2>
-        <p className="text-lg sm:text-xl md:text-2xl text-gray-500 mb-8">
-          Sorry, the page you are looking for does not exist.
+        {/* 404 Graphic */}
+        <div className="mb-6">
+          <span className="text-9xl md:text-[10rem] font-extrabold text-teal-200 select-none animate-bounce">
+            404
+          </span>
+        </div>
+        {/* Headline */}
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-teal-100 mb-4">
+          Oops! Page Not Found
+        </h2>
+        {/* Subtitle */}
+        <p className="text-lg sm:text-xl md:text-2xl text-teal-300 mb-8">
+          The page you are looking for doesn't exist or has been moved.
         </p>
+        {/* Button */}
         <Link href="/" legacyBehavior>
-          <a className="px-6 py-3 bg-blue-600 text-white rounded-md text-lg sm:text-xl md:text-2xl hover:bg-blue-700 transition duration-300">
-            Go to Home Page
+          <a className="px-8 py-4 bg-teal-700 text-teal-100 rounded-full text-lg sm:text-xl md:text-2xl shadow-lg hover:bg-teal-800 hover:shadow-xl transition-all duration-300">
+            Back to Home
           </a>
         </Link>
       </div>
