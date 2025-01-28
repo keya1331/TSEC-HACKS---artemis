@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   try {
-    const { identifier, password } = await req.json();
+    const { identifier, password, otp } = await req.json();
 
     // Validate user credentials
     await dbConnect();
@@ -21,13 +21,9 @@ export async function POST(req) {
         { status: 401 }
       );
     }
-
-    if(!user.isVerified) {
-      return new Response(
-        JSON.stringify({ message: "User not verified.", success: false }),
-        { status: 401 }
-      );
-    }
+    // Set user as verified
+    user.isVerified = true;
+    await user.save();
 
     // Generate JWT
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });

@@ -122,6 +122,7 @@ export default function LoginPage() {
         }
       } catch (error) {
         toast.dismiss();
+        // console.log(error);
         toast.error("Login failed. Please try again.");
       }
     } else {
@@ -162,35 +163,6 @@ export default function LoginPage() {
               placeholder="Enter Password"
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-          </div>
-
-          {/* CAPTCHA */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Captcha</label>
-            <div className="flex items-center justify-between">
-              <img
-                src={`data:image/png;base64,${captchaImage}`}
-                alt="CAPTCHA"
-                className="border rounded-lg"
-              />
-              <button
-                type="button"
-                onClick={fetchCaptcha}
-                className="ml-2 px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
-              >
-                Refresh
-              </button>
-            </div>
-            <input
-              type="text"
-              name="captchaInput"
-              value={formData.captchaInput}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
-              placeholder="Enter CAPTCHA"
-            />
-            {errors.captchaInput && <p className="text-red-500 text-xs mt-1">{errors.captchaInput}</p>}
           </div>
 
           {/* Submit Button */}

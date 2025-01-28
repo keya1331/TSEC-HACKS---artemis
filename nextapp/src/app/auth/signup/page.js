@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from 'react-router-dom';
 
 let debounceTimeout;
 
@@ -20,6 +21,7 @@ function SignupPage() {
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otpError, setOtpError] = useState("");
+  // const navigate = useNavigate();
 
   const validateForm = (data) => {
     const newErrors = {};
@@ -69,11 +71,12 @@ function SignupPage() {
         toast.loading("Sending OTP...", { id: "otp" });
         const response = await axios.post("/api/auth/send-otp", {
           email: formData.email,
+          mobileno: formData.mobileno,
         });
         if (response.status === 200) {
           setIsOtpSent(true);
           sessionStorage.setItem("otp", response.data.otp);
-          sessionStorage.setItem("otpExpiry", Date.now() + 2 * 60 * 1000); // 2 minutes expiry
+          sessionStorage.setItem("otpExpiry", Date.now() + 10 * 60 * 1000); // 10 minutes expiry
           toast.success("OTP sent to your email.", { id: "otp" });
         } else {
           toast.error("Failed to send OTP. Please try again.", { id: "otp" });
@@ -86,6 +89,7 @@ function SignupPage() {
       }
     } else {
       setErrors(finalErrors);
+      console.log("Validation Errors:", finalErrors); // Add this line to debug validation errors
       toast.error("Please fix the errors in the form");
     }
   };
@@ -124,6 +128,9 @@ function SignupPage() {
           setErrors({});
           setIsOtpSent(false);
           setOtp("");
+          sessionStorage.removeItem("otp");
+          sessionStorage.removeItem("otpExpiry");
+          // navigate('/'); // Redirect to home page
         } else {
           toast.error("Signup failed. Please try again.", { id: "signup" });
         }
@@ -243,6 +250,20 @@ function SignupPage() {
                 placeholder="********"
               />
               {errors.repassword && <p className="text-red-500 text-xs mt-2">{errors.repassword}</p>}
+            </div>
+
+            {/* Aadhar Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Aadhar Number</label>
+              <input
+                type="text"
+                name="aadharno"
+                value={formData.aadharno}
+                onChange={handleChange}
+                className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                placeholder="123412341234"
+              />
+              {errors.aadharno && <p className="text-red-500 text-xs mt-2">{errors.aadharno}</p>}
             </div>
 
             {/* OTP Input */}
