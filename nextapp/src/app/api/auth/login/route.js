@@ -27,7 +27,7 @@ export async function POST(req) {
 
     // Generate JWT
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-
+    
     return new Response(JSON.stringify({ success: true, token }), { status: 200 });
   } catch (error) {
     console.error("Error logging in:", error);

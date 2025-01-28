@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Users, Target, Heart } from "lucide-react"; // For icons
-import { useState, useEffect } from "react";
-import Loader from "../components/common/Loader";  
+import Loader from "../components/common/Loader";
+import axios from "axios";
+import { toast } from "react-toastify"; // Import toast
 
 function AboutUs() {
   const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formStatus, setFormStatus] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -15,6 +18,26 @@ function AboutUs() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/contact", formData);
+      if (response.status === 200) {
+        setFormStatus("Your query has been received. We will look into the matter.");
+        toast.success("Your query has been received. We will look into the matter."); // Show success toast
+        setFormData({ name: "", email: "", message: "" }); // Reset form
+      }
+    } catch (error) {
+      setFormStatus("There was an error submitting your query. Please try again.");
+      toast.error("There was an error submitting your query. Please try again."); // Show error toast
+    }
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -118,6 +141,56 @@ function AboutUs() {
           >
             Get Involved
           </a>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section className="px-6 py-16 bg-teal-600">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold text-teal-100 mb-4">
+            Contact Us
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your Name"
+                className="w-full px-4 py-2 rounded-lg text-teal-900"
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Your Email"
+                className="w-full px-4 py-2 rounded-lg text-teal-900"
+                required
+              />
+            </div>
+            <div>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Your Message"
+                className="w-full px-4 py-2 rounded-lg text-teal-900"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="px-8 py-4 bg-teal-800 text-teal-100 rounded-lg text-lg font-semibold shadow-md hover:bg-teal-700 transition-transform duration-300"
+            >
+              Submit
+            </button>
+          </form>
+          {formStatus && <p className="mt-4 text-teal-200">{formStatus}</p>}
         </div>
       </section>
     </div>
