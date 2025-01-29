@@ -87,18 +87,29 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Additional Content Sections */}
-        <div className="flex flex-wrap justify-between p-4">
-          {/* Flora Map */}
-          <div className="w-full md:w-1/2 p-2">
-            <FloraMap />
-          </div>
+       {/* Additional Content Sections */}
+<div className="p-6 mt-16">
+  <h2 className="text-3xl font-bold text-center text-[#084C20] mb-8">
+    Biodiversity Hotspots
+  </h2>
+  <div className="flex flex-wrap justify-between p-4">
+    {/* Flora Map */}
+    <div className="w-full md:w-1/2 p-2">
+      <div className="relative w-[400px] h-[400px] mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <FloraMap />
+      </div>
+    </div>
 
-          {/* Fauna Map */}
-          <div className="w-full md:w-1/2 p-2">
-            <FaunaMap />
-          </div>
-        </div>
+    {/* Fauna Map */}
+    <div className="w-full md:w-1/2 p-2">
+      <div className="relative w-[400px] h-[400px] mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <FaunaMap />
+      </div>
+    </div>
+  </div>
+</div>
+
+
       </main>
 
       <Chatbot />
