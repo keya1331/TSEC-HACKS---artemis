@@ -22,3 +22,7 @@ wildlife_detection/runs/
 flora_detection/test/
 wildfire_detection/models
 flora_detection/test/
+
+risk_prioritiser/models/
+risk_prioritiser/forest_risks_dataset.csv
+risk_prioritiser/trial.csv
