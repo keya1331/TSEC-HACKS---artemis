@@ -172,7 +172,7 @@ def chat():
         print(f"Received prompt: {prompt}")
         output = ollama.generate(
             model='llama3.2',
-            prompt=f'{prompt}',
+            prompt=f'Respond only with information relevant to wildlife conservation, environmental risks, flora/fauna identification, poaching prevention, fire hazards, and emergency coordination in forested areas. If the query is unrelated, steer the conversation back to these topics. Keep responses concise, accurate, and actionable. Prompt: {prompt}',
         )
         print(f"Response content: {output['response']}")
         return jsonify({"response": output['response']})
