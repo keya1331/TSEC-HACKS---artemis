@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -22,11 +22,11 @@ const FloraMap = () => {
   }, []);
 
   return (
-    <div className="h-screen w-1/2 relative">
+    <div className="relative w-[400px] h-[400px] bg-white rounded-lg shadow-lg overflow-hidden">
       <MapContainer 
         center={[20.5937, 78.9629]} 
         zoom={5} 
-        className="w-full h-full z-0"
+        className="w-full h-full"
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer

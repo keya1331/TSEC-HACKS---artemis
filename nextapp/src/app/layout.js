@@ -42,6 +42,7 @@ export default function RootLayout({ children }) {
   //   return <Loader />;
   // }
 
+  
   return (
     <html lang="en">
       <body
@@ -49,6 +50,8 @@ export default function RootLayout({ children }) {
       >
        {/* Navbar */}
       <Navbar />
+      
+      
         <Toaster />
         {children}
         <Footer />
