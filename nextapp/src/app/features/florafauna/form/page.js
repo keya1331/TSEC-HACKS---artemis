@@ -8,10 +8,7 @@ import { FaPaw } from "react-icons/fa";
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
-<<<<<<< HEAD
   const [detectionResults, setDetectionResults] = useState(null);
-=======
->>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
   const [formData, setFormData] = useState({
     name: "",
     type: "Flora",
@@ -38,23 +35,18 @@ export default function UploadForm() {
     data.append("longitude", formData.longitude);
 
     try {
-<<<<<<< HEAD
       // Different API endpoints based on type
       const apiEndpoint = formData.type === "Flora" 
         ? "http://localhost:5000/detect_flora"
         : "http://localhost:5000/detect_faunna";
       console.log(apiEndpoint);
       const res = await fetch(apiEndpoint, {
-=======
-      const res = await fetch("/api/classification", {
->>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
         method: "POST",
         body: data,
       });
 
       const response = await res.json();
       if (res.ok) {
-<<<<<<< HEAD
         setDetectionResults(response);
         
         // Store results in MongoDB - updated to match API expectations
@@ -82,9 +74,6 @@ export default function UploadForm() {
         toast.success("Upload and detection successful!");
         
         // Reset form
-=======
-        toast.success(response.message);
->>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
         setFormData({
           name: "",
           type: "Flora",
@@ -126,7 +115,6 @@ export default function UploadForm() {
         <FaPaw className="text-8xl text-[#84C16B] animate-bounce" />
       </div>
 
-<<<<<<< HEAD
       <div className="w-full max-w-lg space-y-6">
         {/* Form Section */}
         <form
@@ -201,53 +189,6 @@ export default function UploadForm() {
           </div>
         )}
       </div>
-=======
-      {/* Form Section */}
-      <form
-        onSubmit={handleUpload}
-        className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg"
-      >
-        <h2 className="text-2xl font-bold text-center text-[#084C20] mb-6">
-          Wildlife Upload Form
-        </h2>
-        <input
-          type="text"
-          placeholder="Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
-        />
-        <select
-          value={formData.type}
-          onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
-        >
-          <option value="Flora">Flora</option>
-          <option value="Faunna">Faunna</option>
-        </select>
-        <input
-          type="file"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
-        />
-        <button
-          type="button"
-          onClick={getLocation}
-          className="mb-4 p-3 bg-[#6DBE47] text-white rounded-lg w-full hover:bg-[#5CAA3F] transition duration-300"
-        >
-          Get Location
-        </button>
-        <p className="mb-4 text-[#084C20] text-center">
-          Latitude: {formData.latitude}, Longitude: {formData.longitude}
-        </p>
-        <button
-          type="submit"
-          className="p-3 bg-[#6DBE47] text-white rounded-lg w-full hover:bg-[#5CAA3F] transition duration-300"
-        >
-          Upload
-        </button>
-      </form>
->>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
     </div>
   );
 }

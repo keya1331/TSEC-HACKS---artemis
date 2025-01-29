@@ -7,10 +7,6 @@ wildfire_detection/models
 
 wildlife_detection/AOD-20250129T035709Z-002
 wildlife_detection/models
-<<<<<<< HEAD
-=======
-wildfire_detection/src/
->>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
 animal-detection-using-yolo-v8.ipynb
 
 data/
@@ -29,10 +25,6 @@ wildlife_detection/wildlife notebook.ipynb
 wildlife_detection/wandb/
 wildlife_detection/runs/
 
-<<<<<<< HEAD
-=======
-wildfire_detection/src/
->>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
 .cache.sqlite
 
 flora_detection/test/
