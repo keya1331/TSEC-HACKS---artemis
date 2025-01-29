@@ -4,10 +4,14 @@ import Chatbot from "./components/common/Chatbot";
 import { useState, useEffect } from "react";
 import Loader from "./components/common/Loader";
 import Navbar from "./components/common/Navbar";
+import FloraMap from "./features/florafauna/floramap/page";
+import FaunaMap from "./features/florafauna/faunamap/page";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [classifications, setClassifications] = useState([]);
+
 
   const imageUrls = [
     "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35?w=1080&auto=format&fit=crop&q=80&ixlib=rb-4.0.3",
@@ -31,6 +35,31 @@ export default function Home() {
     }, 3000);
     return () => clearInterval(interval);
   }, [imageUrls.length]);
+
+
+  useEffect(() => {
+    // Fetch data from the backend API
+    const fetchClassifications = async () => {
+      try {
+        const response = await fetch('/api/florafauna'); // Adjust the URL if necessary
+        const data = await response.json();
+        setClassifications(data);
+      } catch (error) {
+        console.error('Error fetching classifications:', error);
+      }
+    };
+
+    fetchClassifications();
+  }, []);
+
+  const floraClassifications = classifications.filter(
+    (classification) => classification.type === 'Flora'
+  );
+
+  const faunaClassifications = classifications.filter(
+    (classification) => classification.type === 'Fauna'
+  );
+
 
   if (isLoading) {
     return <Loader />;
@@ -59,12 +88,15 @@ export default function Home() {
         </div>
 
         {/* Additional Content Sections */}
-        <div className="relative h-screen flex items-center justify-center bg-[#D8E3A6] text-[#081707]">
-          <div className="max-w-3xl text-center">
-            <h2 className="text-4xl font-semibold mb-4">Discover Nature</h2>
-            <p className="text-lg leading-relaxed">
-              Explore the wonders of wildlife through stunning imagery and captivating stories.
-            </p>
+        <div className="flex flex-wrap justify-between p-4">
+          {/* Flora Map */}
+          <div className="w-full md:w-1/2 p-2">
+            <FloraMap />
+          </div>
+
+          {/* Fauna Map */}
+          <div className="w-full md:w-1/2 p-2">
+            <FaunaMap />
           </div>
         </div>
       </main>
