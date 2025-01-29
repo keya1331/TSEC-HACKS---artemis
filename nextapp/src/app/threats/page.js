@@ -30,7 +30,7 @@ export default function UploadForm() {
     data.append("longitude", formData.longitude);
 
     try {
-      const res = await fetch("/api/thread", {
+      const res = await fetch("/api/threats", {
         method: "POST",
         body: data,
       });
