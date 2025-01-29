@@ -10,17 +10,12 @@ export default function SatelliteDetectionPage() {
     const [location, setLocation] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [map, setMap] = useState(null);
-<<<<<<< HEAD
     const [marker, setMarker] = useState(null);
     const [predictions, setPredictions] = useState({
         satellite: { status: 'SATELLITE PREDICTION WILL BE SHOWN HERE', confidence: 0 },
         weather: { status: 'WEATHER PREDICTION WILL BE SHOWN HERE', confidence: 0 },
         combined: { status: 'COMBINED PREDICTION WILL BE SHOWN HERE', confidence: 0 }
     });
-=======
-    const [prediction, setPrediction] = useState('SATELLITE PREDICTION WILL BE SHOWN HERE');
-    const [confidence, setConfidence] = useState(0);
->>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
 
     useEffect(() => {
         if (mapboxgl.supported()) {
@@ -31,7 +26,6 @@ export default function SatelliteDetectionPage() {
                 zoom: 2,
                 accessToken: MAPBOX_TOKEN
             });
-<<<<<<< HEAD
 
             const markerInstance = new mapboxgl.Marker({ draggable: true })
                 .setLngLat([0, 0])
@@ -89,32 +83,13 @@ export default function SatelliteDetectionPage() {
                 confidence: data.average_probability || 0
             }
         });
-=======
-            setMap(mapInstance);
-        }
-    }, []);
-
-    const handleSearch = async () => {
-        // Simulating API call for location search
-        setSuggestions([`${location} Region 1`, `${location} Region 2`]);
-    };
-
-    const handlePredict = async () => {
-        // Simulated prediction response
-        setPrediction('Wildfire Risk Detected');
-        setConfidence(80); // Example confidence level
->>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
     };
 
     return (
         <div className="text-center my-4">
             <h1 className="text-3xl font-bold mb-4">Satellite Detection Page</h1>
 
-<<<<<<< HEAD
             {/* Search Section */}
-=======
-            {/* Search Bar */}
->>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
             <div className="flex justify-center mb-4 relative">
                 <div className="relative w-96">
                     <input 
@@ -130,15 +105,9 @@ export default function SatelliteDetectionPage() {
                                 <div 
                                     key={index} 
                                     className="p-2 cursor-pointer hover:bg-gray-200"
-<<<<<<< HEAD
                                     onClick={() => setLocation(item.label)}
                                 >
                                     {item.label}
-=======
-                                    onClick={() => setLocation(item)}
-                                >
-                                    {item}
->>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
                                 </div>
                             ))}
                         </div>
@@ -150,7 +119,6 @@ export default function SatelliteDetectionPage() {
             {/* Map Display */}
             <div id="map" className="w-full max-w-lg h-96 mx-auto mb-4 border-2 border-blue-500 rounded"></div>
 
-<<<<<<< HEAD
             {/* Prediction Sections */}
             {Object.entries(predictions).map(([key, { status, confidence }]) => (
                 <div key={key} className="mt-8 mb-8">
@@ -169,24 +137,6 @@ export default function SatelliteDetectionPage() {
                     </div>
                 </div>
             ))}
-=======
-            {/* Predict Button */}
-            <button onClick={handlePredict} className="p-2 bg-blue-500 text-white rounded">IS THERE A WILDFIRE?</button>
-
-            {/* Prediction Display */}
-            <div className="mt-8 mb-8">
-                <div className="text-2xl font-bold mb-4">Satellite Prediction</div>
-                <div className="text-xl font-medium text-center">{prediction}</div>
-                <div className="mt-4 flex items-center justify-center mb-8">
-                    <div className="w-96 bg-gray-300 h-8 rounded-lg relative">
-                        <div style={{ width: `${confidence}%` }} className="h-full rounded-lg bg-green-500"></div>
-                        <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
-                            {confidence}%
-                        </div>
-                    </div>
-                </div>
-            </div>
->>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
 
             <div className="mt-8 text-center text-sm text-gray-600">
                 <em>Note: These predictions may not be entirely accurate. They indicate the likelihood of a wildfire occurring and are not certain.</em>
