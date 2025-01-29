@@ -1,7 +1,7 @@
 venv/
 .env
 wildfire_detection/src/__pycache__/
-wildfire_detection/analysis/datasets/
+wildfire_detection/analysis/datasets
 wildlife_detection/AOD-20250129T035709Z-002
 wildlife_detection/models
 animal-detection-using-yolo-v8.ipynb
