@@ -4,11 +4,7 @@ from io import BytesIO
 from tensorflow.keras.models import load_model
 
 # Load the model
-<<<<<<< HEAD
-model_path = r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\analysis\wildfire_detection_model.keras"
-=======
-model_path = "analysis/wildfire_camera_detection_model.keras"
->>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
+model_path = r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\models\wildfire_detection_model.keras"
 model = load_model(model_path)
 
 
