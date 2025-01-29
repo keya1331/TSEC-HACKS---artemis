@@ -7,12 +7,15 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const pathname = usePathname();
 
   // Check login status
   useEffect(() => {
     const user = localStorage.getItem("userEmail");
+    const admin = localStorage.getItem("adminEmail");
     setIsLoggedIn(!!user);
+    setIsAdminLoggedIn(!!admin);
   }, [pathname]);
 
   // Scroll event listener
@@ -32,6 +35,12 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    window.location.href = "/";
+  };
+
+  const handleAdminLogout = () => {
+    localStorage.clear();
+    setIsAdminLoggedIn(false);
     window.location.href = "/";
   };
 
@@ -84,12 +93,21 @@ export default function Navbar() {
           </Link>
         )}
 
-        <Link
-          href="/admin/login"
-          className="px-5 py-2 text-white border border-[#BAD799] rounded-full hover:bg-[#BAD799] hover:text-black transition-all duration-300"
-        >
-          Login as Admin
-        </Link>
+        {isAdminLoggedIn ? (
+          <button
+            onClick={handleAdminLogout}
+            className="px-5 py-2 text-white border border-[#BAD799] rounded-full hover:bg-[#BAD799] hover:text-black transition-all duration-300"
+          >
+            Admin Logout
+          </button>
+        ) : (
+          <Link
+            href="/admin/login"
+            className="px-5 py-2 text-white border border-[#BAD799] rounded-full hover:bg-[#BAD799] hover:text-black transition-all duration-300"
+          >
+            Login as Admin
+          </Link>
+        )}
       </div>
     </nav>
   );
