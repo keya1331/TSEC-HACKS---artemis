@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative h-screen">
+      <div className="relative h-screen z-0">
         {/* Parallax Background */}
         <div
           className="absolute inset-0 bg-cover bg-fixed bg-center"
