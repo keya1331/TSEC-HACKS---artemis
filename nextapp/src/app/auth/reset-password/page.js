@@ -1,22 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation'; // Use useSearchParams to get query parameters
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
 export default function ResetPassword() {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Get searchParams from the hook
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Unwrap searchParams to get the token and email
+  // Extract token and email from query parameters
   const token = searchParams.get('token');
   const email = searchParams.get('email');
 
   useEffect(() => {
-    // If either token or email is missing, show an error and redirect
     if (!token || !email) {
       toast.error('Invalid or expired link.');
       router.push('/auth/forgot-password');
@@ -26,7 +25,6 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Start submission process
     setIsSubmitting(true);
     toast.loading('Resetting password...', { id: 'reset-password' });
 
@@ -60,17 +58,15 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-200">
-      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">
-          Reset Password
-        </h2>
-        <p className="text-sm text-gray-500 mb-6 text-center">
-          Enter your new password below.
+    <div className="min-h-screen flex items-center justify-center bg-[#BAD799] text-[#081707] px-4">
+      <div className="w-full max-w-md p-8 bg-[#F5F5F5] rounded-lg shadow-lg border border-[#6DBE47]">
+        <h2 className="text-3xl font-extrabold text-center mb-6 text-[#237414]">Reset Password</h2>
+        <p className="text-sm text-[#081707] text-center mb-8">
+          Enter your new password to reset your account.
         </p>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-[#081707]">
               New Password
             </label>
             <input
@@ -78,7 +74,7 @@ export default function ResetPassword() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 mt-1 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              className="mt-2 block w-full px-4 py-3 bg-[#BAD799] border border-[#6DBE47] rounded-lg focus:ring-2 focus:ring-[#8AAC8B] text-[#081707]"
               placeholder="Enter your new password"
               required
             />
@@ -86,11 +82,11 @@ export default function ResetPassword() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full py-2 px-4 font-semibold rounded-lg shadow-md text-white ${
+            className={`w-full py-3 font-semibold rounded-lg transition ${
               isSubmitting
-                ? 'bg-blue-300 cursor-not-allowed'
-                : 'bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75'
-            }`}
+                ? 'bg-[#BAD799] cursor-not-allowed'
+                : 'bg-[#6DBE47] hover:bg-[#237414] focus:ring-2 focus:ring-[#8AAC8B]'
+            } text-white`}
           >
             {isSubmitting ? 'Resetting...' : 'Reset Password'}
           </button>
