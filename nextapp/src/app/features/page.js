@@ -27,7 +27,7 @@ export default function FeaturesPage() {
         </Link>
 
         {/* Wildfire Section */}
-        <Link href="/features/wildfire" passHref>
+        <Link href="/features/wildfire/camera" passHref>
           <div className="relative group cursor-pointer">
             <div className="relative p-8 bg-white rounded-2xl shadow-xl transform transition-transform duration-300 group-hover:scale-105">
               <div className="relative z-10 flex flex-col items-center text-center">

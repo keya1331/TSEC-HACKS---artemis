@@ -2,11 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = usePathname();
 
-  // Add scroll event listener for navbar
+  // Check login status
+  useEffect(() => {
+    const user = localStorage.getItem("userEmail");
+    setIsLoggedIn(!!user);
+  }, [pathname]);
+
+  // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -19,6 +28,12 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    window.location.href = "/";
+  };
 
   return (
     <nav
@@ -53,14 +68,22 @@ export default function Navbar() {
 
       {/* User Login/Signup & Admin Login */}
       <div className="flex space-x-4">
-        <Link
-          href="/auth/login"
-          className="px-6 py-2 text-[#BAD799] bg-[#1A5F10] font-semibold rounded-full shadow-md hover:bg-[#14470D] hover:text-white transition-all duration-300"
-        >
-          Login / Signup
-        </Link>
+        {isLoggedIn ? (
+          <button
+            onClick={handleLogout}
+            className="px-6 py-2 text-[#BAD799] bg-[#1A5F10] font-semibold rounded-full shadow-md hover:bg-[#14470D] hover:text-white transition-all duration-300"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            href="/auth/login"
+            className="px-6 py-2 text-[#BAD799] bg-[#1A5F10] font-semibold rounded-full shadow-md hover:bg-[#14470D] hover:text-white transition-all duration-300"
+          >
+            Login / Signup
+          </Link>
+        )}
 
-        {/* Admin Login Button */}
         <Link
           href="/admin/login"
           className="px-5 py-2 text-white border border-[#BAD799] rounded-full hover:bg-[#BAD799] hover:text-black transition-all duration-300"
