@@ -26,9 +26,9 @@ const Footer = () => {
           <ul className="space-y-2">
             {[
               { href: "/", label: "Home" },
+              { href: "/reports", label: "Reports" },
+              { href: "/features", label: "Features" },
               { href: "/aboutus", label: "About Us" },
-              { href: "/services", label: "Services" },
-              { href: "/contact", label: "Contact" },
             ].map(({ href, label }) => (
               <li key={href}>
                 <a
