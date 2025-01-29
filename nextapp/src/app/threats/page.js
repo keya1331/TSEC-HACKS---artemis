@@ -1,8 +1,10 @@
 "use client";
+
 import { useState } from "react";
-import "tailwindcss/tailwind.css"; // Import Tailwind CSS
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import "tailwindcss/tailwind.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaPaw } from "react-icons/fa";
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
@@ -16,8 +18,13 @@ export default function UploadForm() {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    // Validate required fields
-    if (!file || !formData.name || !formData.message || !formData.latitude || !formData.longitude) {
+    if (
+      !file ||
+      !formData.name ||
+      !formData.message ||
+      !formData.latitude ||
+      !formData.longitude
+    ) {
       return toast.error("All fields are required!");
     }
 
@@ -38,15 +45,14 @@ export default function UploadForm() {
       const response = await res.json();
       if (res.ok) {
         toast.success(response.message);
-        // Clear form data after successful upload
         setFormData({
           name: "",
-          type: "Fire",
+          type: "Flora",
           message: "",
           latitude: "",
           longitude: "",
         });
-        setFile(null); // Clear file input
+        setFile(null);
       } else {
         toast.error(response.error || "An error occurred!");
       }
@@ -69,50 +75,67 @@ export default function UploadForm() {
     }
   };
 
-  console.log("UploadForm -> formData", formData);
-
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 mt-10">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] relative">
       <ToastContainer />
-      <form onSubmit={handleUpload} className="bg-white p-6 rounded shadow-md w-full max-w-md">
+
+      {/* Wildlife Icons on Sides */}
+      <div className="absolute top-20 left-10 hidden lg:block">
+        <FaPaw className="text-8xl text-[#6DBE47] animate-pulse" />
+      </div>
+      <div className="absolute bottom-20 right-10 hidden lg:block">
+        <FaPaw className="text-8xl text-[#84C16B] animate-bounce" />
+      </div>
+
+      {/* Form Section */}
+      <form
+        onSubmit={handleUpload}
+        className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg"
+      >
+        <h2 className="text-2xl font-bold text-center text-[#084C20] mb-6">
+          Wildlife Upload Form
+        </h2>
         <input
           type="text"
           placeholder="Name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="mb-4 p-2 border border-gray-300 rounded w-full"
+          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         />
         <select
           value={formData.type}
           onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-          className="mb-4 p-2 border border-gray-300 rounded w-full"
+          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         >
-          
           <option value="Flora">Flora</option>
           <option value="Faunna">Faunna</option>
         </select>
         <textarea
           placeholder="Message"
           value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="mb-4 p-2 border border-gray-300 rounded w-full"
+          onChange={(e) =>
+            setFormData({ ...formData, message: e.target.value })
+          }
+          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         />
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
-          className="mb-4 p-2 border border-gray-300 rounded w-full"
+          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         />
         <button
           type="button"
           onClick={getLocation}
-          className="mb-4 p-2 bg-blue-500 text-white rounded w-full"
+          className="mb-4 p-3 bg-[#6DBE47] text-white rounded-lg w-full hover:bg-[#5CAA3F] transition duration-300"
         >
           Get Location
         </button>
-        <p className="mb-4">Latitude: {formData.latitude}, Longitude: {formData.longitude}</p>
+        <p className="mb-4 text-[#084C20] text-center">
+          Latitude: {formData.latitude}, Longitude: {formData.longitude}
+        </p>
         <button
           type="submit"
-          className="p-2 bg-green-500 text-white rounded w-full"
+          className="p-3 bg-[#6DBE47] text-white rounded-lg w-full hover:bg-[#5CAA3F] transition duration-300"
         >
           Upload
         </button>
