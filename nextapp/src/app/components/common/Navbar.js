@@ -38,11 +38,10 @@ export default function Navbar() {
       <ul className="flex space-x-8 text-sm sm:text-base text-white">
         {[
           { href: "/", label: "HOME" },
-          { href: "/nature", label: "REPORT" },
-          { href: "/animals", label: "COMMUNITY" },
-          { href: "/fashion", label: "RESOURCES" },
-          { href: "/travel", label: "ABOUT US" },
-          { href: "/culture", label: "CONTACT US" },
+          { href: "/reports", label: "REPORT" },
+          { href: "/community", label: "COMMUNITY" },
+          { href: "/features", label: "FEATURES" },
+          { href: "/aboutus", label: "ABOUT US" },
         ].map(({ href, label }) => (
           <li key={href}>
             <Link href={href} className="hover:text-[#6DBE47] transition duration-300">
