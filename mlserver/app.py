@@ -7,7 +7,7 @@ from flask import Flask, redirect, request, jsonify
 from flask_cors import CORS
 import ollama
 
-from wildfire_detection.src.satellite_functions import satellite_cnn_predict
+# from wildfire_detection.src.satellite_functions import satellite_cnn_predict
 from wildfire_detection.src.camera_functions import camera_cnn_predict
 from wildfire_detection.src.meteorological_functions import weather_data_predict
 
@@ -18,7 +18,7 @@ load_dotenv()
 MAPBOX_TOKEN = os.getenv("MAPBOX_TOKEN")
 
 def init_db():
-    conn = sqlite3.connect("wildfire_detection/src/alerts.db")
+    conn = sqlite3.connect(r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\src\alerts.db")
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -34,7 +34,7 @@ def init_db():
     conn.close()
 
 def run_alert_script():
-    script_path = os.path.join(os.path.dirname(__file__), "wildfire_detection/src/email_alert.py")
+    script_path = os.path.join(os.path.dirname(__file__), r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\src\email_alert.py")
     try:
         subprocess.run(["python", script_path], check=True)
         print("Processing script executed successfully.")
@@ -82,7 +82,7 @@ def alert():
             }), 400
 
         try:
-            conn = sqlite3.connect("wildfire_detection/src/alerts.db")
+            conn = sqlite3.connect(r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\src\alerts.db")
             cursor = conn.cursor()
 
             cursor.execute("SELECT * FROM alerts WHERE email=?", (email,))
@@ -106,41 +106,41 @@ def alert():
         except Exception as e:
             return jsonify({"success": False, "message": str(e)}), 500
 
-@app.route("/satellite_predict", methods=["POST"])
-def satellite_predict():
-    data = request.json
-    latitude = data["location"][1]
-    longitude = data["location"][0]
-    zoom = data["zoom"]
+# @app.route("/satellite_predict", methods=["POST"])
+# def satellite_predict():
+#     data = request.json
+#     latitude = data["location"][1]
+#     longitude = data["location"][0]
+#     zoom = data["zoom"]
 
-    output_size = (350, 350)
-    crop_amount = 35
-    save_path = "satellite_image.png"
+#     output_size = (350, 350)
+#     crop_amount = 35
+#     save_path = "satellite_image.png"
 
-    prediction_sattelite = satellite_cnn_predict(
-        latitude, longitude, output_size=output_size,
-        zoom_level=zoom, crop_amount=crop_amount, save_path=save_path
-    )
+#     prediction_sattelite = satellite_cnn_predict(
+#         latitude, longitude, output_size=output_size,
+#         zoom_level=zoom, crop_amount=crop_amount, save_path=save_path
+#     )
 
-    satellite_confidence = round((prediction_sattelite if prediction_sattelite > 0.5 else 1 - prediction_sattelite) * 100)
-    satellite_status = 1 if prediction_sattelite > 0.5 else 0
+#     satellite_confidence = round((prediction_sattelite if prediction_sattelite > 0.5 else 1 - prediction_sattelite) * 100)
+#     satellite_status = 1 if prediction_sattelite > 0.5 else 0
 
-    prediction_weather = weather_data_predict(latitude, longitude)
-    weather_confidence = round((prediction_weather if prediction_weather > 0.5 else 1 - prediction_weather) * 100)
-    weather_status = 1 if prediction_weather > 0.5 else 0
+#     prediction_weather = weather_data_predict(latitude, longitude)
+#     weather_confidence = round((prediction_weather if prediction_weather > 0.5 else 1 - prediction_weather) * 100)
+#     weather_status = 1 if prediction_weather > 0.5 else 0
 
-    prediction_average = (prediction_sattelite + prediction_weather) / 2
-    average_confidence = round((prediction_average if prediction_average > 0.5 else 1 - prediction_average) * 100)
-    average_status = 1 if prediction_average > 0.5 else 0
+#     prediction_average = (prediction_sattelite + prediction_weather) / 2
+#     average_confidence = round((prediction_average if prediction_average > 0.5 else 1 - prediction_average) * 100)
+#     average_status = 1 if prediction_average > 0.5 else 0
 
-    return jsonify({
-        "satellite_probability": satellite_confidence,
-        "satellite_status": satellite_status,
-        "weather_probability": weather_confidence,
-        "weather_status": weather_status,
-        "average_probability": average_confidence,
-        "average_status": average_status
-    }), 200
+#     return jsonify({
+#         "satellite_probability": satellite_confidence,
+#         "satellite_status": satellite_status,
+#         "weather_probability": weather_confidence,
+#         "weather_status": weather_status,
+#         "average_probability": average_confidence,
+#         "average_status": average_status
+#     }), 200
 
 @app.route("/camera_predict", methods=["POST"])
 def camera_predict():

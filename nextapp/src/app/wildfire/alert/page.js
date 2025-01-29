@@ -58,7 +58,7 @@ const WildfireAlertPage = () => {
       return;
     }
 
-    const response = await fetch("/api/alert", {
+    const response = await fetch("http://localhost:5000/alert", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, latitude: center.lat, longitude: center.lng }),

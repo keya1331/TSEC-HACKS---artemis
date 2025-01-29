@@ -7,10 +7,17 @@ from datetime import datetime
 import joblib
 
 model = __import__("tensorflow").keras.models.load_model(
+<<<<<<< HEAD
+    r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\analysis\meteorological-detection-classification.keras"
+)
+
+std_scaler = joblib.load(r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\analysis\std_scaler_weather.pkl")
+=======
     "../analysis/meteorological-detection-classification.keras"
 )
 
 std_scaler = joblib.load("analysis/std_scaler_weather.pkl")
+>>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
 
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession(".cache", expire_after=3600)

@@ -24,7 +24,7 @@ const CameraDetection = () => {
     const formData = new FormData();
     formData.append("image", image);
 
-    const response = await fetch("/api/camera_predict", {
+    const response = await fetch("http://localhost:5000/camera_predict", {
       method: "POST",
       body: formData,
     });
