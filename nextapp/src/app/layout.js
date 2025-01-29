@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Footer from "./components/common/Footer";
+import Navbar from "./components/common/Navbar";
 import { Toaster } from "react-hot-toast";
 
 // import { useState, useEffect } from "react";
@@ -46,7 +47,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       
+       {/* Navbar */}
+      <Navbar />
         <Toaster />
         {children}
         <Footer />
