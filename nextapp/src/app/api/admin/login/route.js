@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   try {
-    const { identifier, password, otp } = await req.json();
+    const { identifier, password } = await req.json();
 
     // Validate admin credentials
     await dbConnect();
