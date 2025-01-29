@@ -1,9 +1,10 @@
-'use client';  // Use client-side rendering
+'use client';  
 
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import Link from 'next/link';
 
 const MapComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -45,7 +46,7 @@ const MapComponent = () => {
             <Popup>
               <div className="p-2">
                 <strong className="block text-lg">Location:</strong> 
-                <span>{thread.location.latitude}, {thread.location.longitude}</span><br />
+                <span><Link href={`https://maps.google.com/?q=${thread.location.latitude},${thread.location.longitude}`}>{thread.location.latitude}, {thread.location.longitude}</Link></span><br />
                 <strong className="block text-lg mt-2">Description:</strong> 
                 <span>{thread.message}</span><br />
                 <strong className="block text-lg mt-2">Picture:</strong><br />
