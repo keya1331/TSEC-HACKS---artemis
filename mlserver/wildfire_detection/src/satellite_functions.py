@@ -11,7 +11,7 @@ from tensorflow.keras.models import load_model
 load_dotenv()
 MAPBOX_TOKEN = os.getenv("MAPBOX_TOKEN")
 
-model = load_model("../analysis/models/wildfire_satellite_detection_model.keras")
+model = load_model(r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\models\wildfire_satellite_detection_model.keras")
 
 
 # Function to preprocess the satellite image

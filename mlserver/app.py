@@ -6,8 +6,14 @@ import atexit
 from flask import Flask, redirect, request, jsonify
 from flask_cors import CORS
 import ollama
+from ultralyticsplus import YOLO
+import torch
+import json
+from torchvision import transforms, models
+from PIL import Image
+import matplotlib.pyplot as plt
 
-# from wildfire_detection.src.satellite_functions import satellite_cnn_predict
+from wildfire_detection.src.satellite_functions import satellite_cnn_predict
 from wildfire_detection.src.camera_functions import camera_cnn_predict
 from wildfire_detection.src.meteorological_functions import weather_data_predict
 
@@ -106,41 +112,41 @@ def alert():
         except Exception as e:
             return jsonify({"success": False, "message": str(e)}), 500
 
-# @app.route("/satellite_predict", methods=["POST"])
-# def satellite_predict():
-#     data = request.json
-#     latitude = data["location"][1]
-#     longitude = data["location"][0]
-#     zoom = data["zoom"]
+@app.route("/satellite_predict", methods=["POST"])
+def satellite_predict():
+    data = request.json
+    latitude = data["location"][1]
+    longitude = data["location"][0]
+    zoom = data["zoom"]
 
-#     output_size = (350, 350)
-#     crop_amount = 35
-#     save_path = "satellite_image.png"
+    output_size = (350, 350)
+    crop_amount = 35
+    save_path = "satellite_image.png"
 
-#     prediction_sattelite = satellite_cnn_predict(
-#         latitude, longitude, output_size=output_size,
-#         zoom_level=zoom, crop_amount=crop_amount, save_path=save_path
-#     )
+    prediction_sattelite = satellite_cnn_predict(
+        latitude, longitude, output_size=output_size,
+        zoom_level=zoom, crop_amount=crop_amount, save_path=save_path
+    )
 
-#     satellite_confidence = round((prediction_sattelite if prediction_sattelite > 0.5 else 1 - prediction_sattelite) * 100)
-#     satellite_status = 1 if prediction_sattelite > 0.5 else 0
+    satellite_confidence = round((prediction_sattelite if prediction_sattelite > 0.5 else 1 - prediction_sattelite) * 100)
+    satellite_status = 1 if prediction_sattelite > 0.5 else 0
 
-#     prediction_weather = weather_data_predict(latitude, longitude)
-#     weather_confidence = round((prediction_weather if prediction_weather > 0.5 else 1 - prediction_weather) * 100)
-#     weather_status = 1 if prediction_weather > 0.5 else 0
+    prediction_weather = weather_data_predict(latitude, longitude)
+    weather_confidence = round((prediction_weather if prediction_weather > 0.5 else 1 - prediction_weather) * 100)
+    weather_status = 1 if prediction_weather > 0.5 else 0
 
-#     prediction_average = (prediction_sattelite + prediction_weather) / 2
-#     average_confidence = round((prediction_average if prediction_average > 0.5 else 1 - prediction_average) * 100)
-#     average_status = 1 if prediction_average > 0.5 else 0
+    prediction_average = (prediction_sattelite + prediction_weather) / 2
+    average_confidence = round((prediction_average if prediction_average > 0.5 else 1 - prediction_average) * 100)
+    average_status = 1 if prediction_average > 0.5 else 0
 
-#     return jsonify({
-#         "satellite_probability": satellite_confidence,
-#         "satellite_status": satellite_status,
-#         "weather_probability": weather_confidence,
-#         "weather_status": weather_status,
-#         "average_probability": average_confidence,
-#         "average_status": average_status
-#     }), 200
+    return jsonify({
+        "satellite_probability": satellite_confidence,
+        "satellite_status": satellite_status,
+        "weather_probability": weather_confidence,
+        "weather_status": weather_status,
+        "average_probability": average_confidence,
+        "average_status": average_status
+    }), 200
 
 @app.route("/camera_predict", methods=["POST"])
 def camera_predict():
@@ -170,6 +176,132 @@ def chat():
     except Exception as e:
         print(f"Exception: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+# Initialize model once at startup - similar to notebook approach
+def init_plant_model():
+    model = YOLO('foduucom/plant-leaf-detection-and-classification')
+    # Configure model parameters like in notebook
+    model.overrides['conf'] = 0.1
+    model.overrides['iou'] = 0.15
+    model.overrides['agnostic_nms'] = False
+    model.overrides['max_det'] = 1000
+    return model
+
+plant_model = init_plant_model()
+
+@app.route("/detect_plant", methods=["POST"])
+def detect_plant():
+    if "image" not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+
+    try:
+        # Handle image upload similar to camera_predict
+        image_file = request.files["image"]
+        temp_path = "temp_plant.jpg"
+        image_file.save(temp_path)
+
+        # Perform prediction like in notebook
+        results = plant_model.predict(temp_path)
+        
+        # Get the first result's boxes like in notebook
+        boxes = results[0].boxes
+        detections = []
+        
+        # Process each detection
+        for box in boxes:
+            detection = {
+                "class_id": int(box.cls[0].item()),
+                "class_name": plant_model.names[int(box.cls[0].item())],
+                "confidence": float(box.conf[0].item()) * 100,  # Convert to percentage
+                "bbox": box.xyxy[0].tolist()
+            }
+            detections.append(detection)
+
+        # Clean up
+        os.remove(temp_path)
+        
+        return jsonify({
+            "success": True,
+            "detections": detections,
+            "total_detections": len(detections)
+        }), 200
+
+    except Exception as e:
+        if os.path.exists("temp_plant.jpg"):
+            os.remove("temp_plant.jpg")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+# Wildlife detection setup
+wildlife_device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+def init_wildlife_model():
+    model = models.resnet50()
+    num_features = model.fc.in_features
+    model.fc = torch.nn.Linear(num_features, 15)
+    model.load_state_dict(torch.load('wildlife_detection/animal_classifier.pth', map_location=wildlife_device))
+    model = model.to(wildlife_device)
+    model.eval()
+    return model
+
+wildlife_model = init_wildlife_model()
+
+# Wildlife detection transforms and classes
+wildlife_transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+
+wildlife_classes = ['bear', 'bird', 'cat', 'cow', 'deer', 'dog', 'dolphin', 
+                   'elephant', 'giraffe', 'horse', 'kangaroo', 'lion', 'panda', 
+                   'tiger', 'zebra']
+
+def load_wildlife_image(image_file):
+    image = Image.open(image_file)
+    image = wildlife_transform(image).unsqueeze(0)
+    return image.to(wildlife_device)
+
+def predict_wildlife(image_file):
+    image = load_wildlife_image(image_file)
+    with torch.no_grad():
+        outputs = wildlife_model(image)
+        _, predicted = torch.max(outputs, 1)
+    return predicted.item()
+
+@app.route("/detect_wildlife", methods=["POST"])
+def detect_wildlife():
+    if "image" not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+
+    try:
+        image_file = request.files["image"]
+        temp_path = "temp_wildlife.jpg"
+        image_file.save(temp_path)
+
+        # Predict wildlife
+        predicted_class_idx = predict_wildlife(temp_path)
+        predicted_class = wildlife_classes[predicted_class_idx]
+
+        # Clean up
+        os.remove(temp_path)
+
+        return jsonify({
+            "success": True,
+            "wildlife_class": predicted_class,
+            "class_id": predicted_class_idx
+        }), 200
+
+    except Exception as e:
+        if os.path.exists("temp_wildlife.jpg"):
+            os.remove("temp_wildlife.jpg")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 if __name__ == "__main__":
     init_db()
