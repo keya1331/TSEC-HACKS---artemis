@@ -1,9 +1,35 @@
-'use client';  // Use client-side rendering
+'use client';
 
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine';
+import Link from 'next/link';
+
+const RoutingMachine = ({ waypoints }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+
+    const routingControl = L.Routing.control({
+      waypoints: waypoints.map((wp) => L.latLng(wp[0], wp[1])),
+      lineOptions: {
+        styles: [{ color: 'blue', weight: 4 }],
+      },
+      show: false,
+      addWaypoints: false,
+      routeWhileDragging: false,
+      fitSelectedRoutes: true,
+      createMarker: () => null, // Hide the markers for the waypoints
+    }).addTo(map);
+
+    return () => map.removeControl(routingControl);
+  }, [map, waypoints]);
+
+  return null;
+};
 
 const MapComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -45,7 +71,7 @@ const MapComponent = () => {
             <Popup>
               <div className="p-2">
                 <strong className="block text-lg">Location:</strong> 
-                <span>{thread.location.latitude}, {thread.location.longitude}</span><br />
+                <span><Link href={`https://maps.google.com/?q=${thread.location.latitude},${thread.location.longitude}`}>{thread.location.latitude}, {thread.location.longitude}</Link></span><br />
                 <strong className="block text-lg mt-2">Description:</strong> 
                 <span>{thread.message}</span><br />
                 <strong className="block text-lg mt-2">Picture:</strong><br />
@@ -54,6 +80,11 @@ const MapComponent = () => {
             </Popup>
           </Marker>
         ))}
+        {threads.length > 1 && (
+          <RoutingMachine
+            waypoints={threads.map(thread => [thread.location.latitude, thread.location.longitude])}
+          />
+        )}
       </MapContainer>
     </div>
   );

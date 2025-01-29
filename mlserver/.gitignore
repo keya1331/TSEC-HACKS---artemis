@@ -26,5 +26,12 @@ wildlife_detection/wildlife notebook.ipynb
 wildlife_detection/wandb/
 wildlife_detection/runs/
 
+wildfire_detection/src/
+.cache.sqlite
+
 flora_detection/test/
 flora_detection/saved_model.pth
+
+risk_prioritiser/models/
+risk_prioritiser/forest_risks_dataset.csv
+risk_prioritiser/trial.csv
