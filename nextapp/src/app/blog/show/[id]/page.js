@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -17,11 +17,6 @@ const Page = () => {
         .catch(error => console.error('Error fetching blog:', error));
     }
   }, [id]);
-
-  const handleEdit = () => {
-    // Handle edit logic
-    console.log('Edit blog:', id);
-  };
 
   const handleDelete = () => {
     const userEmail = localStorage.getItem('userEmail');
@@ -57,19 +52,23 @@ const Page = () => {
   };
 
   if (!blog) {
-    return <div>Loading...</div>;
+    return <div className="flex items-center justify-center min-h-screen text-lg text-[#084C20]">Loading...</div>;
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
-      <p className="text-lg mb-6">{blog.content}</p>
-      <button 
-        onClick={handleDelete} 
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-      >
-        Delete
-      </button>
+    <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] to-[#b0c578] flex flex-col items-center justify-center py-10 px-4">
+      <div className="bg-white shadow-lg rounded-lg max-w-3xl w-full p-6">
+        <h1 className="text-4xl font-extrabold text-[#084C20] text-center mb-6">{blog.title}</h1>
+        <p className="text-lg text-[#084C20] leading-relaxed mb-6">{blog.content}</p>
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={handleDelete}
+            className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-all duration-300"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

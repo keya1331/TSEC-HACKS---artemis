@@ -34,33 +34,48 @@ export default function AddBlogPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Add a New Blog</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Content:</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-          />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-          Add Blog
-        </button>
-      </form>
+    <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] to-[#b0c578] flex items-center justify-center py-20">
+      <div className="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8">
+        <h1 className="text-4xl font-extrabold text-[#084C20] text-center mb-8">
+          Add a New Blog
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Title Field */}
+          <div>
+            <label className="block text-sm font-semibold text-[#084C20] mb-1">
+              Title:
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
+            />
+          </div>
+
+          {/* Content Field */}
+          <div>
+            <label className="block text-sm font-semibold text-[#084C20] mb-1">
+              Content:
+            </label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-[#6DBE47] focus:outline-none h-40"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3 bg-[#6DBE47] text-white font-semibold rounded-lg shadow-md hover:bg-[#5CAA3F] transition-all"
+          >
+            Add Blog
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
-
