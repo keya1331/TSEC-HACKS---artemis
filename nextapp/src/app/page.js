@@ -3,12 +3,11 @@
 import Chatbot from "./components/common/Chatbot";
 import { useState, useEffect } from "react";
 import Loader from "./components/common/Loader";
-import Link from "next/link";
+import Navbar from "./components/common/Navbar";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const imageUrls = [
     "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35?w=1080&auto=format&fit=crop&q=80&ixlib=rb-4.0.3",
@@ -33,20 +32,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [imageUrls.length]);
 
-  // Add scroll event listener for navbar
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   if (isLoading) {
     return <Loader />;
   }
@@ -54,46 +39,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
-      <nav
-        className={`fixed top-0 w-full z-50 px-8 py-4 flex justify-between items-center transition-all duration-300 ${
-          isScrolled
-            ? "bg-black bg-opacity-60 backdrop-blur-md"
-            : "bg-transparent"
-        }`}
-      >
-        {/* Logo */}
-        <div className="flex items-center space-x-4">
-          <img
-            src="../../favicon.ico"
-            alt="logo"
-            className="w-10 h-10"
-          />
-          <span className="text-lg font-bold tracking-wide text-white">
-            WildShield
-          </span>
-        </div>
-
-        {/* Navigation Links */}
-        <ul className="flex space-x-8 text-sm sm:text-base text-white">
-          {[
-            { href: "/", label: "HOME" },
-            { href: "/nature", label: "REPORT" },
-            { href: "/animals", label: "COMMUNITY" },
-            { href: "/fashion", label: "RESOURCES" },
-            { href: "/travel", label: "ABOUT US" },
-            { href: "/culture", label: "CONTACT US" },
-          ].map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="hover:text-[#6DBE47] transition duration-300"
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Navbar />
 
       {/* Main Content */}
       <main className="flex-grow">

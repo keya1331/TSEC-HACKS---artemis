@@ -1,8 +1,9 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FiSearch } from "react-icons/fi";
 
 export default function ThreadTable() {
   const [threads, setThreads] = useState([]);
@@ -18,9 +19,9 @@ export default function ThreadTable() {
       const res = await fetch(`/api/admin/show?page=${page}&limit=10`);
       const data = await res.json();
       const filteredThreads = data.threads.filter(thread =>
-        thread.name.includes(search) ||
-        thread.type.includes(search) ||
-        thread.message.includes(search)
+        thread.name.toLowerCase().includes(search.toLowerCase()) ||
+        thread.type.toLowerCase().includes(search.toLowerCase()) ||
+        thread.message.toLowerCase().includes(search.toLowerCase())
       );
       setThreads(filteredThreads);
       setTotalPages(data.totalPages);
@@ -45,69 +46,97 @@ export default function ThreadTable() {
   };
 
   return (
-    <div className="p-6 mt-10">
+    <div className="min-h-screen bg-[#F8FAF5] text-[#081707] px-6 py-10">
       <ToastContainer />
-      <input
-        type="text"
-        value={search}
-        onChange={handleSearchChange}
-        placeholder="Search by name, type, or message"
-        className="mb-4 p-2 border w-full"
-        style={{ marginBottom: '1rem' }} // Ensure the search bar is visible
-      />
+      
+      {/* Search Bar */}
+      <div className="relative mb-8 max-w-2xl mx-auto">
+        <FiSearch className="absolute left-3 top-2.5 text-[#6DBE47]" size={20} />
+        <input
+          type="text"
+          value={search}
+          onChange={handleSearchChange}
+          placeholder="Search by name, type, or message..."
+          className="w-full py-3 pl-10 pr-4 rounded-full bg-[#FFFFFF] text-[#081707] border border-[#BAD799] shadow-sm focus:ring-2 focus:ring-[#6DBE47] focus:outline-none placeholder-gray-500"
+        />
+      </div>
+
+      {/* Data Table */}
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center text-[#6DBE47] font-semibold text-lg">Loading...</p>
       ) : (
-        <table className="table-auto w-full border-collapse">
-          <thead>
-            <tr>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Type</th>
-              <th className="border p-2">Message</th>
-              <th className="border p-2">Image</th>
-              <th className="border p-2">Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            {threads.length > 0 ? (
-              threads.map((thread) => (
-                <tr key={thread._id}>
-                  <td className="border p-2">{thread.name}</td>
-                  <td className="border p-2">{thread.type}</td>
-                  <td className="border p-2">{thread.message}</td>
-                  <td className="border p-2">
-                    <img
-                      src={thread.image}
-                      alt={thread.name}
-                      className="w-16 h-16 object-cover"
-                    />
-                  </td>
-                  <td className="border p-2">
-                    {thread.location.latitude}, {thread.location.longitude}
+        <div className="overflow-hidden shadow-lg rounded-lg border border-[#BAD799]">
+          <table className="table-auto w-full bg-white rounded-lg">
+            <thead>
+              <tr className="bg-[#BAD799] text-[#081707]">
+                <th className="p-4 text-left">Name</th>
+                <th className="p-4 text-left">Type</th>
+                <th className="p-4 text-left">Message</th>
+                <th className="p-4 text-left">Image</th>
+                <th className="p-4 text-left">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {threads.length > 0 ? (
+                threads.map((thread) => (
+                  <tr
+                    key={thread._id}
+                    className="border-t border-[#D8E3A6] hover:bg-[#F4F9EB] transition-all"
+                  >
+                    <td className="p-4">{thread.name}</td>
+                    <td className="p-4">{thread.type}</td>
+                    <td className="p-4">{thread.message}</td>
+                    <td className="p-4">
+                      <div className="w-16 h-16 border border-[#6DBE47] rounded-lg overflow-hidden shadow-md">
+                        <img
+                          src={thread.image}
+                          alt={thread.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      {thread.location.latitude}, {thread.location.longitude}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="p-4 text-center text-gray-400 border-t border-[#D8E3A6]"
+                  >
+                    No threads found
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="border p-2 text-center">No threads found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
-      <div className="mt-4 flex justify-between">
+
+      {/* Pagination */}
+      <div className="mt-8 flex justify-between items-center max-w-2xl mx-auto">
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}
-          className="px-4 py-2 bg-gray-300"
+          className={`px-6 py-3 rounded-lg font-medium transition-all shadow-md ${
+            page === 1
+              ? "bg-gray-300 cursor-not-allowed text-gray-500"
+              : "bg-[#BAD799] text-[#081707] hover:bg-[#6DBE47]"
+          }`}
         >
           Previous
         </button>
-        <span className="px-4">{`Page ${page} of ${totalPages}`}</span>
+        <span className="text-lg font-semibold">{`Page ${page} of ${totalPages}`}</span>
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages}
-          className="px-4 py-2 bg-gray-300"
+          className={`px-6 py-3 rounded-lg font-medium transition-all shadow-md ${
+            page === totalPages
+              ? "bg-gray-300 cursor-not-allowed text-gray-500"
+              : "bg-[#BAD799] text-[#081707] hover:bg-[#6DBE47]"
+          }`}
         >
           Next
         </button>
