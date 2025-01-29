@@ -6,7 +6,11 @@ flask-cors==4.0.1
 requests==2.32.3
 ollama==0.4.7
 absl-py==2.1.0
+<<<<<<< HEAD
 APScheduler>=3.10.1
+=======
+APScheduler==3.10.4
+>>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
 astunparse==1.6.3
 attrs==23.2.0
 blinker==1.8.2

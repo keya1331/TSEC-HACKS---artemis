@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+<<<<<<< HEAD
 
 const nextConfig = {
     images: {
@@ -12,3 +13,8 @@ const nextConfig = {
   
 export default nextConfig;
   
+=======
+const nextConfig = {};
+
+export default nextConfig;
+>>>>>>> 4de7757a08193fe93d142779f85985d2ac03fddd
