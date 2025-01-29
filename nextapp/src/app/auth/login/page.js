@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otpError, setOtpError] = useState("");
+  const [actualOtp, setActualOtp] = useState("");
 
   const router = useRouter();
 
@@ -64,6 +65,7 @@ export default function LoginPage() {
       toast.dismiss();
       if (data.success) {
         setIsOtpSent(true);
+        setActualOtp(data.otp); // Store the actual OTP sent
         toast.success("OTP sent to your email.");
       } else {
         toast.error(data.message);
@@ -76,8 +78,9 @@ export default function LoginPage() {
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    if (otp === "123456") {
+    if (otp === actualOtp) { // Compare with the actual OTP
       toast.success("Login successful!");
+      localStorage.setItem("userEmail", formData.identifier); // Save email to local storage
       router.push("/");
     } else {
       setOtpError("Invalid OTP. Please try again.");
