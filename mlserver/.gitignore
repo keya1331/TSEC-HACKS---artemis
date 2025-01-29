@@ -1,0 +1,17 @@
+venv/
+.env
+wildfire_detection/src/__pycache__/
+wildfire_detection/analysis/kaggle/
+wildlife_detection/AOD-20250129T035709Z-002
+wildlife_detection/models
+animal-detection-using-yolo-v8.ipynb
+runs/
+data/
+wildlife_detection/images/
+wildlife_detection/labels/
+wildlife_detection/config.yaml
+wildlife_detection/wildlife_detector.pt
+wildlife_detection/yolo11n.pt
+
+flora_detection/test/
+wildfire_detection/analysis/wildfire_detection_model.keras
