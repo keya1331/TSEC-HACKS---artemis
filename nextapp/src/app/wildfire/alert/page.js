@@ -70,86 +70,72 @@ const WildfireAlertPage = () => {
     const data = await response.json();
     setMessage(
       data.success
-        ? "Alert subscription successful! You will receive wildfire alerts."
-        : "An error occurred. Please try again."
+        ? "✅ Alert subscription successful! You will receive wildfire alerts."
+        : "❌ An error occurred. Please try again."
     );
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#D8E3A6] to-[#BAD799] flex flex-col items-center justify-center px-6 py-12 overflow-hidden">
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-10 left-5 w-48 h-48 bg-[#6DBE47] opacity-30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-[#1A5F10] opacity-40 rounded-full blur-2xl"></div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-[#D8E3A6] to-[#BAD799] flex flex-col items-center justify-center px-4 py-12">
+      {/* Title */}
+      <h1 className="text-4xl font-extrabold text-[#237414] mb-6">Wildfire Alert Service</h1>
 
-      {/* Content Container */}
-      <div className="relative z-10 bg-white bg-opacity-80 backdrop-blur-xl rounded-xl shadow-xl px-10 py-12 max-w-4xl w-full text-center">
-        {/* Title */}
-        <h1 className="text-4xl font-extrabold text-[#1A5F10] mb-6">Wildfire Alert Service</h1>
-        <p className="text-lg text-[#237414] mb-8">Stay updated with real-time wildfire alerts in your selected location.</p>
-
-        {/* Search Location */}
-        <div className="relative w-full mb-6">
-          <input
-            type="text"
-            className="w-full p-3 bg-white bg-opacity-80 border-none rounded-md shadow-md text-[#081707] placeholder-gray-600 focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
-            placeholder="Search for a location"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              fetchSuggestions(e.target.value);
-            }}
-          />
-          {suggestions.length > 0 && (
-            <div className="absolute left-0 mt-2 w-full bg-white bg-opacity-90 rounded-md shadow-md max-h-48 overflow-y-auto z-10">
-              {suggestions.map((suggestion, index) => (
-                <div
-                  key={index}
-                  className="p-3 cursor-pointer hover:bg-[#BAD799] transition"
-                  onClick={() => {
-                    setSearchQuery(suggestion.label);
-                    setMapLocation(suggestion.value);
-                    setSuggestions([]);
-                  }}
-                >
-                  {suggestion.label}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Map Container */}
-        <div className="w-full h-96 mb-8 bg-[#BAD799] rounded-lg shadow-md overflow-hidden relative">
-          <div id="map" className="absolute inset-0"></div>
-        </div>
-
-        {/* Subscription Form */}
-        <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
-          <label className="block text-[#081707] font-bold mb-2">Your Email:</label>
-          <input
-            type="email"
-            className="w-full p-3 bg-white bg-opacity-80 border-none rounded-md shadow-md text-[#081707] placeholder-gray-600 focus:ring-2 focus:ring-[#6DBE47] focus:outline-none mb-4"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <button
-            type="submit"
-            className="px-6 py-3 bg-[#1A5F10] text-[#D8E3A6] font-semibold rounded-md shadow-lg hover:bg-[#14470D] transition duration-300"
-          >
-            Receive Alerts
-          </button>
-        </form>
-
-        {/* Confirmation Message */}
-        {message && (
-          <div className="mt-4 text-lg font-bold text-[#1A5F10] text-center">
-            {message}
+      {/* Search Location */}
+      <div className="relative w-full max-w-md mb-6">
+        <input
+          type="text"
+          className="w-full p-3 border-2 border-[#237414] rounded-md text-[#081707] placeholder-[#476C29] focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
+          placeholder="📍 Enter Location"
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            fetchSuggestions(e.target.value);
+          }}
+        />
+        {suggestions.length > 0 && (
+          <div className="absolute left-0 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-md max-h-48 overflow-y-auto z-10">
+            {suggestions.map((suggestion, index) => (
+              <div
+                key={index}
+                className="p-3 cursor-pointer hover:bg-[#BAD799] transition"
+                onClick={() => {
+                  setSearchQuery(suggestion.label);
+                  setMapLocation(suggestion.value);
+                  setSuggestions([]);
+                }}
+              >
+                {suggestion.label}
+              </div>
+            ))}
           </div>
         )}
       </div>
+
+      {/* Map */}
+      <div className="w-full max-w-lg h-96 mb-6 border-4 border-[#237414] rounded-lg shadow-lg relative overflow-hidden">
+        <div id="map" className="absolute inset-0"></div>
+      </div>
+
+      {/* Subscription Form */}
+      <form onSubmit={handleSubmit} className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+        <label className="block text-[#081707] font-bold mb-2">📧 Your Email:</label>
+        <input
+          type="email"
+          className="w-full p-3 border-2 border-[#237414] rounded-md text-[#081707] placeholder-[#476C29] focus:ring-2 focus:ring-[#6DBE47] focus:outline-none mb-4"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button
+          type="submit"
+          className="w-full py-3 bg-[#237414] text-[#D8E3A6] font-semibold rounded-md shadow-md hover:bg-[#1A5F10] transition duration-300"
+        >
+          🔥 Receive Alerts
+        </button>
+      </form>
+
+      {/* Confirmation Message */}
+      {message && <div className="mt-4 text-lg font-bold text-[#237414]">{message}</div>}
     </div>
   );
 };
