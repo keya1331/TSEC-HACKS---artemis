@@ -28,11 +28,7 @@ export default function Navbar() {
     >
       {/* Logo */}
       <div className="flex items-center space-x-4">
-        <img
-          src="../../favicon.ico"
-          alt="logo"
-          className="w-10 h-10"
-        />
+        <img src="../../favicon.ico" alt="logo" className="w-10 h-10" />
         <span className="text-lg font-bold tracking-wide text-white">
           WildShield
         </span>
@@ -49,15 +45,30 @@ export default function Navbar() {
           { href: "/culture", label: "CONTACT US" },
         ].map(({ href, label }) => (
           <li key={href}>
-            <Link
-              href={href}
-              className="hover:text-[#6DBE47] transition duration-300"
-            >
+            <Link href={href} className="hover:text-[#6DBE47] transition duration-300">
               {label}
             </Link>
           </li>
         ))}
       </ul>
+
+      {/* User Login/Signup & Admin Login */}
+      <div className="flex space-x-4">
+        <Link
+          href="/auth/login"
+          className="px-6 py-2 text-[#BAD799] bg-[#1A5F10] font-semibold rounded-full shadow-md hover:bg-[#14470D] hover:text-white transition-all duration-300"
+        >
+          Login / Signup
+        </Link>
+
+        {/* Admin Login Button */}
+        <Link
+          href="/admin/login"
+          className="px-5 py-2 text-white border border-[#BAD799] rounded-full hover:bg-[#BAD799] hover:text-black transition-all duration-300"
+        >
+          Login as Admin
+        </Link>
+      </div>
     </nav>
   );
 }
