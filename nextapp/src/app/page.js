@@ -38,8 +38,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navbar */}
-      <Navbar />
+      
 
       {/* Main Content */}
       <main className="flex-grow">
