@@ -72,9 +72,9 @@ export default function UploadForm() {
   console.log("UploadForm -> formData", formData);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 mt-10">
       <ToastContainer />
-      <form onSubmit={handleUpload} className="bg-white p-6 rounded shadow-md mt-10 w-full max-w-md">
+      <form onSubmit={handleUpload} className="bg-white p-6 rounded shadow-md w-full max-w-md">
         <input
           type="text"
           placeholder="Name"
