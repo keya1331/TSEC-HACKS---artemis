@@ -1,10 +1,35 @@
-'use client';  
+'use client';
 
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine';
 import Link from 'next/link';
+
+const RoutingMachine = ({ waypoints }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+
+    const routingControl = L.Routing.control({
+      waypoints: waypoints.map((wp) => L.latLng(wp[0], wp[1])),
+      lineOptions: {
+        styles: [{ color: 'blue', weight: 4 }],
+      },
+      show: false,
+      addWaypoints: false,
+      routeWhileDragging: false,
+      fitSelectedRoutes: true,
+      createMarker: () => null, // Hide the markers for the waypoints
+    }).addTo(map);
+
+    return () => map.removeControl(routingControl);
+  }, [map, waypoints]);
+
+  return null;
+};
 
 const MapComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -55,6 +80,11 @@ const MapComponent = () => {
             </Popup>
           </Marker>
         ))}
+        {threads.length > 1 && (
+          <RoutingMachine
+            waypoints={threads.map(thread => [thread.location.latitude, thread.location.longitude])}
+          />
+        )}
       </MapContainer>
     </div>
   );
