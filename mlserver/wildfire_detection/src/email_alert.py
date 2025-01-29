@@ -10,7 +10,7 @@ from jinja2 import Template
 
 # Connect to the alerts database
 def fetch_alerts():
-    conn = sqlite3.connect("alerts.db")
+    conn = sqlite3.connect(r"E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\wildfire_detection\src\alerts.db")
     cursor = conn.cursor()
     cursor.execute("SELECT email, latitude, longitude FROM alerts")
     records = cursor.fetchall()
@@ -93,7 +93,7 @@ def send_email(report, email_content):
 
     mail_from = {
         "name": "Wildfire Alerts",
-        "email": "alerts@trial-k68zxl21dwm4j905.mlsender.net",
+        "email": "artemissvnit@gmail.com",
     }
 
     recipients = [{"email": report["email"]}]
