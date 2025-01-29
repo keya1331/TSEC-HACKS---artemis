@@ -3,6 +3,7 @@
 import React from "react";
 import { FaPaw, FaMapMarkedAlt, FaBullhorn } from "react-icons/fa";
 
+
 export default function AdminDashboard() {
   const highlights = [
     {
@@ -10,6 +11,7 @@ export default function AdminDashboard() {
       description: "Monitor wildlife movements and threats.",
       icon: <FaPaw className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#93d36b] to-[#7fc257]",
+  
     },
     {
       title: "Map Navigation",
@@ -18,7 +20,7 @@ export default function AdminDashboard() {
       bgGradient: "bg-gradient-to-r from-[#a7d97e] to-[#92c76b]",
     },
     {
-      title: "Announcements",
+      title: "Satellite-based Wildfire Monitoring",
       description: "Share updates and conservation news.",
       icon: <FaBullhorn className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#84c16b] to-[#72b059]",
@@ -76,7 +78,7 @@ export default function AdminDashboard() {
             <p className="text-sm">Monitor potential threats to wildlife habitats.</p>
           </div>
           <div className="bg-gradient-to-r from-[#84c16b] to-[#72b059] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
-            <h2 className="text-lg font-semibold mb-4">Announcements</h2>
+            <h2 className="text-lg font-semibold mb-4">Satellite-based Wildfire Monitoring</h2>
             <p className="text-4xl font-bold mb-4">15</p>
             <p className="text-sm">Stay updated with conservation efforts.</p>
           </div>
