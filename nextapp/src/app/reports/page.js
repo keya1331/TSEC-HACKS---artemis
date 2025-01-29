@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "tailwindcss/tailwind.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +15,8 @@ export default function UploadForm() {
     latitude: "",
     longitude: "",
   });
+
+  const [reports, setReports] = useState([]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -53,6 +55,12 @@ export default function UploadForm() {
           longitude: "",
         });
         setFile(null);
+
+        // Simulate adding the new report to the wall
+        setReports((prev) => [
+          ...prev,
+          { name: formData.name, message: formData.message, type: formData.type },
+        ]);
       } else {
         toast.error(response.error || "An error occurred!");
       }
@@ -76,7 +84,7 @@ export default function UploadForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] flex flex-col items-center justify-start pt-10 relative">
       <ToastContainer />
 
       {/* Wildlife Icons on Sides */}
@@ -90,7 +98,7 @@ export default function UploadForm() {
       {/* Form Section */}
       <form
         onSubmit={handleUpload}
-        className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg"
+        className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg mb-10"
       >
         <h2 className="text-2xl font-bold text-center text-[#084C20] mb-6">
           Wildlife Upload Form
@@ -140,6 +148,33 @@ export default function UploadForm() {
           Upload
         </button>
       </form>
+
+      {/* Wall of Threats */}
+      <div className="w-full max-w-6xl px-4">
+        <h2 className="text-2xl font-bold text-[#084C20] mb-6 text-center">
+          Anonymous Wildlife Threats
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reports.length > 0 ? (
+            reports.map((report, index) => (
+              <div
+                key={index}
+                className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+              >
+                <h3 className="text-lg font-bold text-[#084C20]">
+                  {report.name}
+                </h3>
+                <p className="text-sm text-[#237414] italic">{report.type}</p>
+                <p className="text-gray-700 mt-2">{report.message}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-center col-span-3">
+              No threats reported yet.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
