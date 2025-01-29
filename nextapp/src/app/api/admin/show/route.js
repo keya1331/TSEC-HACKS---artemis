@@ -10,24 +10,22 @@ export async function GET(req) {
 
     // Define skip and limit for pagination
     const skip = (parseInt(page) - 1) * parseInt(limit);
-    const threads = await Thread.find({
-      $or: [
-        { name: { $regex: search, $options: "i" } },
-        { message: { $regex: search, $options: "i" } },
-        { type: { $regex: search, $options: "i" } },
-      ],
-    })
+    const searchQuery = search
+      ? {
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { message: { $regex: search, $options: "i" } },
+            { type: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const threads = await Thread.find(searchQuery)
       .skip(skip)
       .limit(parseInt(limit))
       .sort({ createdAt: -1 }); // Sorting by most recent
 
-    const totalThreads = await Thread.countDocuments({
-      $or: [
-        { name: { $regex: search, $options: "i" } },
-        { message: { $regex: search, $options: "i" } },
-        { type: { $regex: search, $options: "i" } },
-      ],
-    });
+    const totalThreads = await Thread.countDocuments(searchQuery);
 
     return NextResponse.json({
       threads,

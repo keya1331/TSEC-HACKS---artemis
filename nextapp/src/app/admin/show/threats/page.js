@@ -15,9 +15,14 @@ export default function ThreadTable() {
   const fetchThreads = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/show?page=${page}&limit=10&search=${search}`);
+      const res = await fetch(`/api/admin/show?page=${page}&limit=10`);
       const data = await res.json();
-      setThreads(data.threads);
+      const filteredThreads = data.threads.filter(thread =>
+        thread.name.includes(search) ||
+        thread.type.includes(search) ||
+        thread.message.includes(search)
+      );
+      setThreads(filteredThreads);
       setTotalPages(data.totalPages);
     } catch (error) {
       toast.error("Failed to fetch threads");
@@ -64,23 +69,29 @@ export default function ThreadTable() {
             </tr>
           </thead>
           <tbody>
-            {threads.map((thread) => (
-              <tr key={thread._id}>
-                <td className="border p-2">{thread.name}</td>
-                <td className="border p-2">{thread.type}</td>
-                <td className="border p-2">{thread.message}</td>
-                <td className="border p-2">
-                  <img
-                    src={thread.image}
-                    alt={thread.name}
-                    className="w-16 h-16 object-cover"
-                  />
-                </td>
-                <td className="border p-2">
-                  {thread.location.latitude}, {thread.location.longitude}
-                </td>
+            {threads.length > 0 ? (
+              threads.map((thread) => (
+                <tr key={thread._id}>
+                  <td className="border p-2">{thread.name}</td>
+                  <td className="border p-2">{thread.type}</td>
+                  <td className="border p-2">{thread.message}</td>
+                  <td className="border p-2">
+                    <img
+                      src={thread.image}
+                      alt={thread.name}
+                      className="w-16 h-16 object-cover"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {thread.location.latitude}, {thread.location.longitude}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="border p-2 text-center">No threads found</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       )}
