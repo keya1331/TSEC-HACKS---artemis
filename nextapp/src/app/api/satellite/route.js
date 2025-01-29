@@ -1,3 +1,30 @@
+<<<<<<< HEAD
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+    try {
+        const formData = await req.formData();
+        
+        const response = await fetch('http://localhost:5000/process_image', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to process image');
+        }
+
+        const data = await response.json();
+        return NextResponse.json(data);
+        
+    } catch (error) {
+        console.error("Error processing image:", error);
+        return NextResponse.json({ 
+            error: "Failed to process wildfire detection." 
+        }, { 
+            status: 500 
+        });
+=======
 // api/satellite/route.js
 import { NextResponse } from "next/server";
 import axios from "axios";
@@ -32,5 +59,6 @@ export async function POST(req) {
     } catch (error) {
         console.error("Error fetching data:", error);
         return NextResponse.json({ error: "Failed to fetch wildfire prediction." }, { status: 500 });
+>>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
     }
 }

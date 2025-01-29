@@ -1,4 +1,29 @@
 import { NextResponse } from "next/server";
+<<<<<<< HEAD
+import Thread from "@/models/classification";
+import dbConnect from "@/lib/db";
+
+export async function POST(req) {
+  await dbConnect();
+
+  try {
+    const data = await req.json(); // Get JSON data
+
+    if (!data.latitude || !data.longitude) {
+      return NextResponse.json({ error: "Location is required" }, { status: 400 });
+    }
+
+    // Save thread in MongoDB
+    const newThread = new Thread({
+      name: data.name || "anonymous",
+      type: data.type,
+      detectionResults: data.detectionResults,
+      location: { 
+        latitude: parseFloat(data.latitude), 
+        longitude: parseFloat(data.longitude) 
+      },
+      timestamp: data.timestamp
+=======
 import connectDB from "@/lib/db";
 import Thread from "@/models/classification";
 import fs from "fs";
@@ -42,11 +67,19 @@ export async function POST(req) {
       type,
       image: imageUrl,
       location: { latitude: parseFloat(latitude), longitude: parseFloat(longitude) },
+>>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
     });
 
     await newThread.save();
 
+<<<<<<< HEAD
+    return NextResponse.json(
+      { message: "Flora and Fauna detection saved successfully", thread: newThread }, 
+      { status: 201 }
+    );
+=======
     return NextResponse.json({ message: "Flora and Faunna is detected successfully", thread: newThread }, { status: 201 });
+>>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
 
   } catch (error) {
     console.error("Upload error:", error);

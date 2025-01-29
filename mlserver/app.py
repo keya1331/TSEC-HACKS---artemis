@@ -52,7 +52,7 @@ def run_alert_script():
 
 # Initialize the scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run_alert_script, trigger="interval", hours=1)
+scheduler.add_job(func=run_alert_script, trigger="interval", minutes=5)  # Changed from hours=1
 scheduler.start()
 
 # Ensure the scheduler is shut down properly on exit

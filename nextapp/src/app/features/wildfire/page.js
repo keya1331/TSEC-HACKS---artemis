@@ -69,7 +69,7 @@ export default function Home() {
                 </div>
 
                 {/* Wildfire Alert Card */}
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl fade-in">
+                {/* <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl fade-in">
                     <div className="relative w-full h-72 border-4 border-[#081707] rounded-t-xl">
                         <Image
                             src="/images/HD-wallpaper-smokey-the-bear-fall-autumn-smokey-washington-fire-danger.jpg"
@@ -95,7 +95,7 @@ export default function Home() {
                             Subscribe to Alerts
                         </Link>
                     </div>
-                </div>
+                </div> */}
             </div>
             <style jsx>{`
                 @keyframes fadeIn {

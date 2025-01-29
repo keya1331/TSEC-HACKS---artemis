@@ -1,242 +1,209 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import axios from "axios";
+import { useState } from "react";
+import { FaSatellite } from "react-icons/fa"; // Import Satellite Icon
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+const SatelliteDetection = () => {
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [prediction, setPrediction] = useState("PREDICTION WILL BE SHOWN HERE");
+  const [confidence, setConfidence] = useState(0);
 
-export default function SatelliteDetectionPage() {
-    const [location, setLocation] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
-    const mapContainer = useRef(null);
-    const map = useRef(null);
-    const marker = useRef(null);
-    const [predictions, setPredictions] = useState({
-        satellite: { status: 'SATELLITE PREDICTION WILL BE SHOWN HERE', confidence: 0 },
-        weather: { status: 'WEATHER PREDICTION WILL BE SHOWN HERE', confidence: 0 },
-        combined: { status: 'COMBINED PREDICTION WILL BE SHOWN HERE', confidence: 0 }
-    });
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
-    useEffect(() => {
-        if (!map.current && mapboxgl.supported()) {
-            map.current = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v11',
-                center: [0, 0],
-                zoom: 2,
-                accessToken: MAPBOX_TOKEN
-            });
+  const handlePrediction = async () => {
+    if (!image) {
+      alert("Please upload a satellite image first.");
+      return;
+    }
 
-            marker.current = new mapboxgl.Marker({ draggable: true })
-                .setLngLat([0, 0])
-                .addTo(map.current);
+    const formData = new FormData();
+    formData.append("image", image);
 
-            marker.current.on('dragend', () => {
-                const lngLat = marker.current.getLngLat();
-                setMapLocation([lngLat.lng, lngLat.lat]);
-            });
-        }
-    }, []);
+    try {
+      const response = await fetch("http://localhost:5000/process_image", {
+        method: "POST",
+        body: formData,
+      });
 
-    const fetchSuggestions = async (query) => {
-        const response = await fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${MAPBOX_TOKEN}`
-        );
-        const data = await response.json();
-        return data.features.map(feature => ({
-            label: feature.place_name,
-            value: feature.center
-        }));
-    };
+      const data = await response.json();
+      
+      // Extract probability from result string
+      const probabilityMatch = data.result.match(/Probability: ([\d.]+)/);
+      const probability = probabilityMatch ? parseFloat(probabilityMatch[1]) * 100 : 0;
+      
+      setPrediction(data.result);
+      setConfidence(probability);
+    } catch (error) {
+      alert("Error processing image. Please try again.");
+    }
+  };
 
-    const setMapLocation = (coords) => {
-        const [lng, lat] = coords;
-        map.current.setCenter([lng, lat]);
-        map.current.setZoom(15);
-        marker.current.setLngLat([lng, lat]);
-    };
+  const getPredictionStatus = (confidence) => {
+    if (confidence > 75) {
+      return {
+        text: "HIGH RISK OF WILDFIRE",
+        color: "text-red-600",
+        bgColor: "bg-red-500"
+      };
+    } else if (confidence > 50) {
+      return {
+        text: "MODERATE RISK OF WILDFIRE",
+        color: "text-orange-600",
+        bgColor: "bg-orange-500"
+      };
+    } else if (confidence > 25) {
+      return {
+        text: "LOW RISK OF WILDFIRE",
+        color: "text-yellow-600",
+        bgColor: "bg-yellow-500"
+      };
+    } else {
+      return {
+        text: "MINIMAL RISK OF WILDFIRE",
+        color: "text-green-600",
+        bgColor: "bg-green-500"
+      };
+    }
+  };
 
-    const handleSearch = async () => {
-        const suggestions = await fetchSuggestions(location);
-        if (suggestions.length > 0) {
-            setMapLocation(suggestions[0].value);
-        }
-        setSuggestions([]);
-    };
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#BAD799] to-[#8FCB81] flex flex-col items-center justify-center px-4 py-12 relative">
+      {/* Floating Satellite Icons */}
+      <div className="absolute top-20 left-10 animate-floating">
+        <FaSatellite className="text-[#237414] text-5xl opacity-60" />
+      </div>
+      <div className="absolute bottom-20 right-10 animate-floating-reverse">
+        <FaSatellite className="text-[#237414] text-5xl opacity-60" />
+      </div>
 
-    const handlePredict = async () => {
-        const center = map.current.getCenter();
-        const zoom = 15;
-        map.current.setZoom(zoom);
-        marker.current.setLngLat([center.lng, center.lat]);
+      <h1 className="text-4xl font-extrabold text-[#237414] mb-8 animate-fade-in">
+        Satellite Detection
+      </h1>
 
-        let mlData = null, satelliteData = null, weatherData = null;
+      {/* Upload Button */}
+      <div className="flex flex-col items-center mb-6">
+        <label
+          htmlFor="imageInput"
+          className="cursor-pointer px-6 py-3 bg-[#237414] text-[#BAD799] font-semibold rounded-md shadow-md flex items-center hover:bg-[#2B8C1B] transition duration-300"
+        >
+          <FaSatellite className="w-6 h-6 mr-2" />
+          Upload Satellite Image
+        </label>
+        <input type="file" id="imageInput" accept="image/*" className="hidden" onChange={handleImageUpload} />
+      </div>
 
-        // ML Server prediction
-        try {
-            const mlResponse = await fetch('http://localhost:5000/satellite_predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    location: [center.lng, center.lat],
-                    zoom: zoom
-                })
-            });
-            if (!mlResponse.ok) throw new Error('ML Server response was not ok');
-            mlData = await mlResponse.json();
-        } catch (error) {
-            console.error("ML Server Error:", error);
-            alert("ML Server prediction failed. Using other available data.");
-        }
-
-        // Satellite API call
-        try {
-            const satelliteResponse = await axios.post("https://api.satellite-fire-detection.com", { 
-                lat: center.lat, 
-                lng: center.lng 
-            });
-            satelliteData = satelliteResponse.data;
-        } catch (error) {
-            console.error("Satellite API Error:", error);
-            alert("Satellite data fetch failed. Using other available data.");
-        }
-
-        // Weather API call
-        try {
-            const weatherResponse = await axios.get(`https://api.weather-wildfire.com?lat=${center.lat}&lng=${center.lng}`);
-            weatherData = weatherResponse.data;
-        } catch (error) {
-            console.error("Weather API Error:", error);
-            alert("Weather data fetch failed. Using other available data.");
-        }
-
-        // Process available data and update predictions
-        try {
-            const predictions = {};
-            
-            if (satelliteData) {
-                predictions.satellite = {
-                    status: satelliteData.fire_detected ? 'THERE IS A WILDFIRE (SATELLITE)' : 'THERE IS NO WILDFIRE (SATELLITE)',
-                    confidence: satelliteData.probability
-                };
-            }
-
-            if (weatherData) {
-                predictions.weather = {
-                    status: weatherData.fire_risk ? 'THERE IS A WILDFIRE (WEATHER)' : 'THERE IS NO WILDFIRE (WEATHER)',
-                    confidence: weatherData.probability
-                };
-            }
-
-            if (mlData) {
-                predictions.ml = {
-                    status: mlData.prediction ? 'THERE IS A WILDFIRE (ML)' : 'THERE IS NO WILDFIRE (ML)',
-                    confidence: mlData.probability
-                };
-            }
-
-            // Calculate combined prediction if at least one data source is available
-            const availableProbabilities = [
-                satelliteData?.probability,
-                weatherData?.probability,
-                mlData?.probability
-            ].filter(p => p !== undefined);
-
-            if (availableProbabilities.length > 0) {
-                const average_probability = availableProbabilities.reduce((a, b) => a + b, 0) / availableProbabilities.length;
-                predictions.combined = {
-                    status: average_probability > 50 ? 'THERE IS A WILDFIRE (COMBINED)' : 'THERE IS NO WILDFIRE (COMBINED)',
-                    confidence: average_probability
-                };
-            }
-
-            // Update state only if we have at least one prediction
-            if (Object.keys(predictions).length > 0) {
-                setPredictions(predictions);
-            } else {
-                throw new Error('No data available from any source');
-            }
-
-        } catch (error) {
-            console.error("Error processing predictions:", error);
-            alert("Failed to process wildfire predictions. Please try again.");
-        }
-    };
-
-    return (
-        <div className="text-center my-4">
-            <h1 className="text-3xl font-bold mb-4">Satellite Detection Page</h1>
-
-            <div className="flex justify-center mb-4 relative">
-                <div className="relative w-96">
-                    <input 
-                        type="text"
-                        className="p-2 border rounded-l w-full"
-                        placeholder="Search location"
-                        value={location}
-                        onChange={(e) => {
-                            setLocation(e.target.value);
-                            if (e.target.value.length > 2) {
-                                fetchSuggestions(e.target.value).then(setSuggestions);
-                            } else {
-                                setSuggestions([]);
-                            }
-                        }}
-                        onKeyPress={(e) => {
-                            if (e.key === 'Enter') handleSearch();
-                        }}
-                    />
-                    {suggestions.length > 0 && (
-                        <div className="absolute left-0 mt-1 w-full bg-white border border-gray-300 max-h-48 overflow-y-auto z-10">
-                            {suggestions.map((item, index) => (
-                                <div 
-                                    key={index}
-                                    className="p-2 cursor-pointer hover:bg-gray-200 text-left"
-                                    onClick={() => {
-                                        setLocation(item.label);
-                                        setMapLocation(item.value);
-                                        setSuggestions([]);
-                                    }}
-                                >
-                                    {item.label}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-                <button onClick={handleSearch} className="p-2 bg-blue-500 text-white rounded-r">Search</button>
-            </div>
-
-            <div id="map" className="w-full max-w-lg h-96 mx-auto mb-4 border-2 border-blue-500 rounded"></div>
-
-            <button onClick={handlePredict} className="p-2 bg-blue-500 text-white rounded mb-8">
-                IS THERE A WILDFIRE?
-            </button>
-
-            {/* Prediction Sections */}
-            {Object.entries(predictions).map(([key, { status, confidence }]) => (
-                <div key={key} className="mt-8 mb-8">
-                    <div className="text-2xl font-bold mb-4">{key.charAt(0).toUpperCase() + key.slice(1)} Prediction</div>
-                    <div className="text-xl font-medium text-center">{status}</div>
-                    <div className="mt-4 flex items-center justify-center mb-8">
-                        <div className="w-96 bg-gray-300 h-8 rounded-lg relative">
-                            <div 
-                                style={{ width: `${confidence}%` }}
-                                className={`h-full rounded-lg ${confidence > 50 ? 'bg-red-500' : 'bg-green-500'}`}
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
-                                Confidence: {confidence}%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ))}
-
-            <div className="mt-8 text-center text-sm text-gray-600">
-                <em>Note: These predictions may not be entirely accurate. They indicate the likelihood of a wildfire occurring and are not certain.</em>
-            </div>
+      {/* Image Preview */}
+      <div className="flex justify-center items-center mb-6">
+        <div className="relative w-96 h-80 flex justify-center items-center border-4 border-dashed border-[#237414] bg-white rounded-lg shadow-md">
+          {preview ? (
+            <img src={preview} alt="Uploaded" className="w-full h-full object-cover rounded-md" />
+          ) : (
+            <p className="text-gray-500">No Image Uploaded</p>
+          )}
         </div>
-    );
-}
+      </div>
+
+      {/* Predict Button */}
+      <button
+        onClick={handlePrediction}
+        disabled={!image}
+        className={`px-6 py-3 bg-[#237414] text-[#BAD799] font-semibold rounded-md shadow-md transition duration-300 ${
+          !image ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#2B8C1B]'
+        }`}
+      >
+        IS THERE A WILDFIRE?
+      </button>
+
+      {/* Updated Prediction Result */}
+      {confidence > 0 && (
+        <div className="space-y-4 mt-6 mb-6 w-96">
+          <div className={`text-2xl font-bold ${getPredictionStatus(confidence).color}`}>
+            {getPredictionStatus(confidence).text}
+          </div>
+          
+          {/* Circular Progress */}
+          <div className="relative w-32 h-32 mx-auto">
+            <svg className="w-full h-full" viewBox="0 0 100 100">
+              {/* Background circle */}
+              <circle
+                className="text-gray-200 stroke-current"
+                strokeWidth="10"
+                cx="50"
+                cy="50"
+                r="40"
+                fill="none"
+              />
+              {/* Progress circle */}
+              <circle
+                className={`${getPredictionStatus(confidence).bgColor} stroke-current transition-all duration-500`}
+                strokeWidth="10"
+                strokeLinecap="round"
+                cx="50"
+                cy="50"
+                r="40"
+                fill="none"
+                transform="rotate(-90 50 50)"
+                strokeDasharray={`${confidence * 2.51327}, 251.327`}
+              />
+              <text
+                x="50"
+                y="50"
+                className="font-bold text-lg"
+                textAnchor="middle"
+                dy="0.3em"
+                fill="#237414"
+              >
+                {`${confidence.toFixed(1)}%`}
+              </text>
+            </svg>
+          </div>
+
+          {/* Risk Level Bar */}
+          <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+            <div
+              className={`h-full ${getPredictionStatus(confidence).bgColor} transition-all duration-500`}
+              style={{ width: `${confidence}%` }}
+            />
+          </div>
+          
+          {/* Risk Description */}
+          <div className="text-sm text-gray-600 text-center mt-2">
+            {confidence > 75 ? (
+              "Immediate action required! High probability of wildfire."
+            ) : confidence > 50 ? (
+              "Caution needed. Moderate chance of wildfire development."
+            ) : confidence > 25 ? (
+              "Monitor conditions. Low but present risk of wildfire."
+            ) : (
+              "Safe conditions. Keep monitoring for changes."
+            )}
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floating {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(15px); }
+          100% { transform: translateY(0px); }
+        }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out; }
+        .animate-floating { animation: floating 3s infinite ease-in-out; }
+        .animate-floating-reverse { animation: floating 3s infinite ease-in-out reverse; }
+      `}</style>
+    </div>
+  );
+};
+
+export default SatelliteDetection;

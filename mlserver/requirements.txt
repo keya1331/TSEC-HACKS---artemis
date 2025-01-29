@@ -84,3 +84,9 @@ wrapt==1.15.0
 # Ultralytics and related dependencies
 ultralytics==8.0.43
 ultralyticsplus==0.0.28
+<<<<<<< HEAD
+scrapy
+pathlib
+albumentations
+=======
+>>>>>>> 576fb3962f42ccfc65dab55794fe098dcf2276e2
