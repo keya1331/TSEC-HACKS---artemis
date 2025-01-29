@@ -1,7 +1,10 @@
 venv/
 .env
+
 wildfire_detection/src/__pycache__/
 wildfire_detection/datasets
+wildfire_detection/models
+
 wildlife_detection/AOD-20250129T035709Z-002
 wildlife_detection/models
 wildfire_detection/src/
@@ -13,15 +16,21 @@ wildlife_detection/labels/
 wildlife_detection/config.yaml
 wildlife_detection/wildlife_detector.pt
 wildlife_detection/yolo11n.pt
+wildlife_detection/animal_classifier.pth
+animal-detection-using-yolo-v8.ipynb
+runs/
+data/
 wildlife_detection/yolov5s.pt
 wildlife_detection/wildlife_detector_model.pkl
 wildlife_detection/wildlife notebook.ipynb
 wildlife_detection/wandb/
 wildlife_detection/runs/
 
+wildfire_detection/src/
+.cache.sqlite
+
 flora_detection/test/
-wildfire_detection/models
-flora_detection/test/
+flora_detection/saved_model.pth
 
 risk_prioritiser/models/
 risk_prioritiser/forest_risks_dataset.csv
