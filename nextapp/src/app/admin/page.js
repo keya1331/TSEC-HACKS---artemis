@@ -32,11 +32,11 @@ export default function AdminDashboard() {
   ];
 
   const photos = [
-    "https://images.unsplash.com/photo-1526318472351-7b3a110bb4eb",
+    "https://images.unsplash.com/photo-1708495798460-f39291f80323?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aWxkbGlmZXxlbnwwfHwwfHx8MA%3D%3D",
     "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
     "https://images.unsplash.com/photo-1470770903676-69b98201ea1c",
     "https://images.unsplash.com/photo-1560807707-8cc77767d783",
-    "https://images.unsplash.com/photo-1605369172944-5e4fae97d8c5",
+    "https://images.unsplash.com/photo-1581852017103-68ac65514cf7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZWxlcGhhbnR8ZW58MHx8MHx8fDA%3D",
   ];
 
   const fetchPatrolOfficers = async () => {
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
                 style={{ backgroundImage: `url(${photo})` }}
               >
                 <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                  <p className="text-[#081707] font-semibold">Wildlife</p>
+                  <p className="text-[white] font-semibold">Wildlife</p>
                 </div>
               </div>
             ))}
