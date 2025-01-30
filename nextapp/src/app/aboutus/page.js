@@ -19,20 +19,21 @@ function AboutUs() {
   }
 
   const imageUrls = [
-    "https://example.com/image1.jpg", // Replace with your direct image URL
-    "https://example.com/image2.jpg", // Replace with your direct image URL
-    "https://example.com/image3.jpg", // Replace with your direct image URL
-    "https://example.com/image4.jpg", // Replace with your direct image URL
-    "https://example.com/image5.jpg", // Replace with your direct image URL
+    "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UFJPRklMRSUyMFBJQ1RVUkV8ZW58MHx8MHx8fDA%3D",
+    "https://images.unsplash.com/photo-1535338454770-8be927b5a00b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1544985361-b420d7a77043?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1616902509409-a624c4f31a56?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1618754141737-4b59b3130ab1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
   ];
+
   return (
-    <div className="bg-[#D8E3A6] text-[#14470D]">
+    <div className="bg-gradient-to-b from-[#4a803d] to-[#c8d796] text-[#14470D]">
       {/* Hero Section */}
       <section className="relative h-screen flex flex-col justify-center items-center text-center px-6">
         <div className="absolute inset-0">
           {/* Floating Circles */}
           <div className="relative w-full h-full">
-            {[...Array(5)].map((_, i) => (
+            {imageUrls.map((url, i) => (
               <div
                 key={i}
                 className={`absolute bg-[#BAD799] border-2 border-[#6DBE47] rounded-full shadow-md ${
@@ -53,7 +54,7 @@ function AboutUs() {
                 }}
               >
                 <img
-                  src={`/images/review-${i + 1}.jpg`}
+                  src={url}
                   alt={`Reviewer ${i + 1}`}
                   className="w-24 h-24 rounded-full border-4 border-[#6DBE47]"
                 />
@@ -127,7 +128,7 @@ function AboutUs() {
                 className="bg-[#BAD799] border border-[#6DBE47] rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
               >
                 <img
-                  src={`/images/team-member-${index + 1}.jpg`}
+                  src={imageUrls[index]}
                   alt={member}
                   className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-[#6DBE47]"
                 />
