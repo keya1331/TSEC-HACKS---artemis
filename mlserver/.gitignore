@@ -33,3 +33,6 @@ flora_detection/saved_model.pth
 risk_prioritiser/models/
 risk_prioritiser/forest_risks_dataset.csv
 risk_prioritiser/trial.csv
+
+disease_detection/model/
+disease_detection/src/
