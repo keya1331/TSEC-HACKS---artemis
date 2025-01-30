@@ -8,10 +8,10 @@ const twilioPhoneNumber = "whatsapp:+14155238886"; // Replace with your Twilio p
 
 const client = new twilio(accountSid, authToken);
 
-const messageBody = "Hello guys! Valentine’s Day is coming, get ready with gifts for your girlfriend! 🎁💝";
-
 export async function POST(req) {
   try {
+    const { announcement } = await req.json();
+    console.log(announcement);
     await dbConnect();
 
     // Fetch all users' mobile numbers
@@ -22,7 +22,7 @@ export async function POST(req) {
     for (const number of phoneNumbers) {
       try {
         const message = await client.messages.create({
-          body: messageBody,
+          body: announcement,
           from: twilioPhoneNumber,
           to: number,
         });

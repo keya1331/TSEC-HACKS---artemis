@@ -8,6 +8,7 @@ export default function BroadcastButton() {
   const [announcement, setAnnouncement] = useState("");
 
   const handleBroadcast = async () => {
+    console.log(announcement);
     if (!announcement.trim()) {
       toast.error("Please enter an announcement before broadcasting.");
       return;
