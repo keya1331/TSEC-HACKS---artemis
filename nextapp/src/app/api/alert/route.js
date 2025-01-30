@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/lib/mongodb"; // Ensure you have a MongoDB connection helper
+import dbConnect from "@/lib/db"; // Ensure you have a MongoDB connection helper
 import { isValidEmail } from "@/utils/validators"; // Helper function for email validation
 
 export async function POST(req) {
@@ -17,7 +17,7 @@ export async function POST(req) {
         }
 
         // Connect to MongoDB (or any other database)
-        const db = await connectToDatabase();
+        dbConnect();
         const collection = db.collection("wildfire_alerts");
 
         // Store the alert subscription
