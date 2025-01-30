@@ -9,6 +9,7 @@ export function LocationProvider({ children }) {
   const [isTracking, setIsTracking] = useState(false);
   const [permissionStatus, setPermissionStatus] = useState('prompt');
   const [locationError, setLocationError] = useState(null);
+  const [lastUpdate, setLastUpdate] = useState(null);
 
   const checkPermission = async () => {
     try {
@@ -67,22 +68,37 @@ export function LocationProvider({ children }) {
           });
         });
 
-        await axios.post('/api/user/update-location', {
+        // Get user email from localStorage
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+          console.error('No user email found');
+          return;
+        }
+
+        const response = await axios.post('/api/user/update-location', {
+          email: userEmail,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         });
 
-        // Show location indicator
-        toast.success('Location updated', {
-          id: 'location-update',
-          duration: 2000,
-          icon: '📍'
-        });
+        if (response.status === 200) {
+          setLastUpdate(new Date());
+          toast.success('Location updated successfully', {
+            id: 'location-update',
+            icon: '📍',
+            duration: 3000,
+            position: 'bottom-right',
+          });
+        }
 
       } catch (error) {
         console.error('Error updating location:', error);
         setLocationError(error.message);
-        toast.error('Failed to update location');
+        toast.error('Failed to update location', {
+          id: 'location-error',
+          duration: 3000,
+          position: 'bottom-right',
+        });
         setIsTracking(false);
       }
     };
@@ -90,12 +106,26 @@ export function LocationProvider({ children }) {
     if (isTracking) {
       // Initial update
       updateLocation();
-      // Set up polling every 5 minutes
-      intervalId = setInterval(updateLocation, 5 * 60 * 1000);
+      // Set up polling every 1 minute (for testing, adjust as needed)
+      intervalId = setInterval(updateLocation, 60000);
+      
+      // Show tracking status
+      toast.success('Location tracking started', {
+        id: 'tracking-status',
+        duration: 3000,
+        icon: '🔄',
+      });
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+        toast.success('Location tracking stopped', {
+          id: 'tracking-status',
+          duration: 3000,
+          icon: '⏹️',
+        });
+      }
     };
   }, [isTracking]);
 
@@ -105,7 +135,8 @@ export function LocationProvider({ children }) {
       stopTracking, 
       isTracking, 
       permissionStatus,
-      locationError 
+      locationError,
+      lastUpdate 
     }}>
       {children}
     </LocationContext.Provider>
