@@ -69,7 +69,7 @@ export default function AdminDashboard() {
   };
   
   return (
-    <div className="pt-32 min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] p-6">
+    <div className="pt-32 min-h-screen bg-gradient-to-br from-[#21371a] via-[#c8d796] to-[#b0c578] p-6">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
           <h1 className="text-4xl font-bold text-center text-[#081707]">
