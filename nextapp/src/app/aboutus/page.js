@@ -20,10 +20,10 @@ function AboutUs() {
 
   const imageUrls = [
     "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UFJPRklMRSUyMFBJQ1RVUkV8ZW58MHx8MHx8fDA%3D",
-    "https://images.unsplash.com/photo-1535338454770-8be927b5a00b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1544985361-b420d7a77043?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1616902509409-a624c4f31a56?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1618754141737-4b59b3130ab1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    "https://plus.unsplash.com/premium_photo-1688572454849-4348982edf7d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8UFJPRklMRSUyMFBJQ1RVUkV8ZW58MHx8MHx8fDA%3D",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8UFJPRklMRSUyMFBJQ1RVUkV8ZW58MHx8MHx8fDA%3D",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8UFJPRklMRSUyMFBJQ1RVUkV8ZW58MHx8MHx8fDA%3D",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8UFJPRklMRSUyMFBJQ1RVUkV8ZW58MHx8MHx8fDA%3D",
   ];
 
   return (
@@ -122,7 +122,7 @@ function AboutUs() {
             Meet Our Team
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {["Jane Doe", "John Smith", "Emily Johnson"].map((member, index) => (
+            {["Ahaan", "Kritika", "Mansi"].map((member, index) => (
               <div
                 key={index}
                 className="bg-[#BAD799] border border-[#6DBE47] rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300"

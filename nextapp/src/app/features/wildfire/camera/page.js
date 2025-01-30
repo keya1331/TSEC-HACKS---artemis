@@ -37,6 +37,9 @@ const CameraDetection = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#2f582c] to-[#d8e3a6] flex flex-col items-center justify-center px-4 py-12 relative">
+      {/* Fixed Navbar Spacer */}
+      <div className="h-16 w-full"></div>
+
       {/* Floating Camera Icons */}
       <div className="absolute top-20 left-10 animate-floating">
         <FaCamera className="text-[#237414] text-5xl opacity-60" />
@@ -76,7 +79,7 @@ const CameraDetection = () => {
 
       {/* Image Preview */}
       <div className="flex justify-center items-center mb-6">
-        <div className="relative w-96 h-80 flex justify-center items-center border-4 border-dashed border-[#237414] bg-white rounded-lg shadow-md">
+        <div className="relative w-96 h-80 flex justify-center items-center border-4 border-solid border-[#237414] bg-white rounded-lg shadow-md">
           {preview ? (
             <img src={preview} alt="Uploaded" className="w-full h-full object-cover rounded-md" />
           ) : (
