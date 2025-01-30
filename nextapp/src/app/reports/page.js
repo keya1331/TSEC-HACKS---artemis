@@ -1,10 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaLeaf, FaFire, FaNewspaper, FaCat } from "react-icons/fa";
 import Link from "next/link";
 
 export default function FeaturesPage() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const response = await fetch("/api/blog/view/all");
+        if (response.ok) {
+          const data = await response.json();
+          setBlogs(data.blogs);
+        } else {
+          console.error("Failed to fetch blogs");
+        }
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchBlogs();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#3c6e38] to-[#d8e3a6] flex flex-col items-center text-[#084C20] pt-20 px-8">
       <h1 className="text-5xl font-extrabold text-center mb-12">Log an Incident</h1>
@@ -39,16 +62,24 @@ export default function FeaturesPage() {
 
       {/* Blogs Section */}
       <h2 className="text-4xl font-bold text-center mb-8">Blogs</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-7xl w-full">
-        {[...Array(15)].map((_, index) => (
-          <div key={index} className="border border-black bg-white p-4 rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105">
-            <h3 className="text-xl font-semibold mb-2">Wildlife Blog {index + 1}</h3>
-            <p className="text-sm text-gray-700">
-              Insights and updates on wildlife conservation, threats, and sustainable initiatives.
-            </p>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <p className="text-center text-lg text-gray-600">Loading blogs...</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-7xl w-full">
+          {blogs.map((blog) => (
+            <div
+              key={blog._id}
+              className="border border-black bg-white p-4 rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105"
+            >
+              <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
+              <p className="text-sm text-gray-700">
+                {blog.description || "No description available."}
+              </p>
+              <p className="text-xs text-gray-500 mt-2">By: {blog.userName}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
