@@ -1,33 +1,55 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
+import dbConnect from '@/lib/db';
 import Blog from '@/models/blog';
 import User from '@/models/user';
 
-export async function POST(request, { params }) {
-  const { id } = params;
-  const { email } = await request.json();
+export async function DELETE(request, { params }) {
+  try {
+    const { id } = params;
+    const { email } = await request.json();
 
-  if (!email) {
-    return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+    if (!email) {
+      return NextResponse.json(
+        { message: 'Email is required' }, 
+        { status: 400 }
+      );
+    }
+
+    await dbConnect();
+
+    // Find both user and blog
+    const [user, blog] = await Promise.all([
+      User.findOne({ email }),
+      Blog.findById(id).populate('userId', 'email')
+    ]);
+
+    if (!user || !blog) {
+      return NextResponse.json(
+        { message: !user ? 'User not found' : 'Blog not found' }, 
+        { status: 404 }
+      );
+    }
+
+    // Check if the logged-in user is the blog author
+    if (blog.userId.email !== email) {
+      return NextResponse.json(
+        { message: 'Not authorized to delete this blog' }, 
+        { status: 403 }
+      );
+    }
+
+    await Blog.findByIdAndDelete(id);
+
+    return NextResponse.json(
+      { message: 'Blog deleted successfully' }, 
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { message: 'Internal server error' }, 
+      { status: 500 }
+    );
   }
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return NextResponse.json({ error: 'User not found' }, { status: 404 });
-  }
-
-  const blog = await Blog.findById(id);
-
-  if (!blog) {
-    return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
-  }
-
-  if (blog.userId.toString() !== user._id.toString()) {
-    return NextResponse.json({ error: 'Not authorized to delete this blog' }, { status: 403 });
-  }
-
-  await Blog.findByIdAndDelete(id);
-
-  return NextResponse.json({ message: 'Blog deleted successfully' }, { status: 200 });
 }

@@ -7,6 +7,10 @@ const blogSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    userEmail: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -15,7 +19,7 @@ const blogSchema = new mongoose.Schema(
     content: {
       type: String,
       required: true,
-    },
+    }
   },
   { timestamps: true }
 );

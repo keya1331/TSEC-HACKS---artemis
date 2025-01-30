@@ -5,12 +5,29 @@ import PropTypes from 'prop-types';
 
 function BlogsPage({ Component }) {
   const [blogs, setBlogs] = useState([]);
+  const [authors, setAuthors] = useState({});
 
   useEffect(() => {
     async function fetchBlogs() {
       const response = await fetch('/api/blog/view/all');
       const data = await response.json();
       setBlogs(data.blogs);
+      
+      // Fetch author names for each unique email
+      const uniqueEmails = [...new Set(data.blogs.map(blog => blog.userEmail))];
+      const authorDetails = {};
+      
+      await Promise.all(uniqueEmails.map(async (email) => {
+        const userResponse = await fetch('/api/user/get-name', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const userData = await userResponse.json();
+        authorDetails[email] = userData.name;
+      }));
+      
+      setAuthors(authorDetails);
     }
     fetchBlogs();
   }, []);
@@ -36,12 +53,14 @@ function BlogsPage({ Component }) {
             <p className="text-gray-700 mb-4">
               {blog.content.substring(0, 100)}...
             </p>
-            <p className="text-gray-500 text-sm mb-4">By: {blog.userName}</p>
+            <p className="text-gray-500 text-sm mb-4">
+              By: {authors[blog.userEmail] || 'Loading...'}
+            </p>
             <button
               onClick={() => handleViewBlog(blog._id)}
-              className="px-6 py-3 bg-[#6DBE47] text-white rounded-lg font-semibold hover:bg-[#5CAA3F] transition-all duration-300"
+              className="px-4 py-2 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition duration-300"
             >
-              View Blog
+              View
             </button>
           </div>
         ))}

@@ -28,6 +28,10 @@ export default function FeaturesPage() {
     fetchBlogs();
   }, []);
 
+  const handleViewBlog = (id) => {
+    window.location.href = `/blog/show/${id}`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#3c6e38] to-[#d8e3a6] flex flex-col items-center text-[#084C20] pt-20 px-8">
       <h1 className="text-5xl font-extrabold text-center mb-12">Log an Incident</h1>
@@ -76,6 +80,14 @@ export default function FeaturesPage() {
                 {blog.description || "No description available."}
               </p>
               <p className="text-xs text-gray-500 mt-2">By: {blog.userName}</p>
+              
+              {/* View Blog Button */}
+              <button
+                onClick={() => handleViewBlog(blog._id)}
+                className="mt-4 px-4 py-2 bg-[#6DBE47] text-white rounded-lg font-semibold hover:bg-[#5CAA3F] transition-all duration-300"
+              >
+                View Blog
+              </button>
             </div>
           ))}
         </div>
