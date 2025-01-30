@@ -7,10 +7,7 @@ import Footer from "./components/common/Footer";
 import Navbar from "./components/common/Navbar";
 import { Toaster } from "react-hot-toast";
 import { LocationProvider } from "@/contexts/LocationContext";
-
-// import { useState, useEffect } from "react";
-// import Loader from "./components/common/Loader";
-
+import LocationTrackingIndicator from "@/components/LocationTrackingIndicator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,28 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata = {
-//   title: "Artemis.",
-//   description: "Created by Team Artemis.",
-// };
-
 export default function RootLayout({ children }) {
-  
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setIsLoading(false); // Simulate loading time
-  //   }, 2000);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
-
-  
   return (
     <html lang="en">
       <body
@@ -54,6 +30,7 @@ export default function RootLayout({ children }) {
           <Toaster />
           {children}
           <Footer />
+          <LocationTrackingIndicator />
         </LocationProvider>
       </body>
     </html>

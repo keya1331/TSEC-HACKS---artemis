@@ -1,33 +1,47 @@
-import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import User from "@/models/user";
-import connectDB from "@/lib/mongodb";
+import dbConnect from "@/lib/db";
 
 export async function POST(request) {
   try {
-    const session = await getServerSession();
-    if (!session) {
+    const { email, latitude, longitude } = await request.json();
+
+    if (!email || !latitude || !longitude) {
       return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
+        { message: "Missing required fields" },
+        { status: 400 }
       );
     }
 
-    const { latitude, longitude } = await request.json();
-    await connectDB();
+    await dbConnect();
 
-    await User.findOneAndUpdate(
-      { email: session.user.email },
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
       { 
         location: {
           latitude,
           longitude
         }
-      }
+      },
+      { new: true }
     );
 
+    if (!updatedUser) {
+      return NextResponse.json(
+        { message: "User not found" },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Location updated successfully" },
+      { 
+        message: "Location updated successfully",
+        timestamp: new Date(),
+        coordinates: {
+          latitude,
+          longitude
+        }
+      },
       { status: 200 }
     );
   } catch (error) {
