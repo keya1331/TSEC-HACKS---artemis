@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useLocation } from "@/contexts/LocationContext";
+import LocationPermissionModal from '@/components/LocationPermissionModal';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -15,8 +17,11 @@ export default function LoginPage() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otpError, setOtpError] = useState("");
   const [actualOtp, setActualOtp] = useState("");
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [locationGranted, setLocationGranted] = useState(false);
 
   const router = useRouter();
+  const { startTracking } = useLocation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -76,15 +81,39 @@ export default function LoginPage() {
     }
   };
 
+  const handleLocationAllow = async () => {
+    const success = await startTracking();
+    if (success) {
+      setLocationGranted(true);
+      setShowLocationModal(false);
+      // Proceed with login
+      completeLogin();
+    }
+  };
+
+  const handleLocationDeny = () => {
+    toast.error('Location access is required to use this application');
+    setShowLocationModal(false);
+    // Optionally redirect to homepage or show error state
+    router.push('/');
+  };
+
+  const completeLogin = async () => {
+    // Existing login logic
+    toast.success("Login successful!");
+    localStorage.setItem("userEmail", formData.identifier);
+    router.push("/");
+  };
+
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    if (otp === actualOtp) { // Compare with the actual OTP
-      toast.success("Login successful!");
-      localStorage.setItem("userEmail", formData.identifier); // Save email to local storage
-      router.push("/");
-    } else {
+    if (otp !== actualOtp) {
       setOtpError("Invalid OTP. Please try again.");
+      return;
     }
+
+    // Show location permission modal after OTP verification
+    setShowLocationModal(true);
   };
 
   return (
@@ -185,6 +214,12 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+      {showLocationModal && (
+        <LocationPermissionModal
+          onAllow={handleLocationAllow}
+          onDeny={handleLocationDeny}
+        />
+      )}
     </div>
   );
 }
