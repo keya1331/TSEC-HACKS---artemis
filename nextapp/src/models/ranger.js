@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const rangerSchema = new mongoose.Schema({
     name: {
@@ -31,4 +31,4 @@ const rangerSchema = new mongoose.Schema({
 });
 
 const Ranger = mongoose.models.Ranger || mongoose.model('Ranger', rangerSchema);
-module.exports = Ranger;
+export default Ranger;

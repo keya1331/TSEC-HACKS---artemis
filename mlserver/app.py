@@ -16,6 +16,8 @@ import numpy as np
 import tensorflow as tf
 import pandas as pd
 import joblib
+from tensorflow import keras
+from tensorflow.keras.preprocessing import image
 
 from wildfire_detection.src.satellite_functions import satellite_cnn_predict
 from wildfire_detection.src.camera_functions import camera_cnn_predict
@@ -125,7 +127,7 @@ def satellite_predict():
 
     output_size = (350, 350)
     crop_amount = 35
-    save_path = "satellite_image.png"
+    save_path = r"E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\satellite_image.png"
 
     prediction_sattelite = satellite_cnn_predict(
         latitude, longitude, output_size=output_size,
@@ -202,7 +204,7 @@ def detect_plant():
     try:
         # Handle image upload similar to camera_predict
         image_file = request.files["image"]
-        temp_path = "temp_plant.jpg"
+        temp_path = r"E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\temp_plant.jpg"
         image_file.save(temp_path)
 
         # Perform prediction like in notebook
@@ -283,7 +285,7 @@ def detect_wildlife():
 
     try:
         image_file = request.files["image"]
-        temp_path = "temp_wildlife.jpg"
+        temp_path = r"E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\temp_wildlife.jpg"
         image_file.save(temp_path)
 
         # Predict wildlife
@@ -315,10 +317,10 @@ wildfire_detection_model = init_wildfire_model()
 @app.route('/process_image', methods=['POST'])
 def process_image():
     image_upload = request.files['image']
-    file_path = 'Imagefile/' + image_upload.filename
+    file_path = r'E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\\' + image_upload.filename
 
-    if not os.path.exists('Imagefile/'):
-        os.makedirs('Imagefile/')
+    if not os.path.exists(r'E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\\'):
+        os.makedirs(r'E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\\')
 
     try:
         image_upload.save(file_path)
@@ -386,6 +388,42 @@ def classify_threats():
     except Exception as e:
         print(f"Error in classify_threats: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+def init_disease_model():
+    return tf.keras.models.load_model(r'E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\disease_detection\model\model.h5')
+
+disease_model = init_disease_model()
+
+@app.route("/detect_disease", methods=["POST"])
+def detect_disease():
+    if "image" not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+
+    try:
+        # Handle image upload similar to camera_predict
+        image_file = request.files["image"]
+        temp_path = r"E:\Programs\TSEC\TSEC-HACKS---artemis\nextapp\public\uploads\animal_skin.jpg"
+        image_file.save(temp_path)
+
+        img = image.load_img(temp_path, target_size=(150, 150))
+        img_array = image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array /= 255.0
+
+        predictions = disease_model.predict(img_array)
+        predicted_class = np.argmax(predictions, axis=1)
+        index = predicted_class[0]
+    
+        return jsonify({
+            "success": True,
+            "disease_name": "Healthy" if index == 2 else "Fungal" if index == 1 else "Bacterial",
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 if __name__ == "__main__":
     init_db()

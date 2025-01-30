@@ -87,3 +87,4 @@ ultralyticsplus==0.0.28
 scrapy
 pathlib
 albumentations
+ailia
