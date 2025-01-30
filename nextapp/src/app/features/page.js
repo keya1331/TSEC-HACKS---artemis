@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] to-[#b0c578] flex flex-col items-center justify-center text-[#084C20]">
+    <div className="min-h-screen bg-gradient-to-br from-[#3c6e38] to-[#d8e3a6] flex flex-col items-center justify-center text-[#084C20]">
       <h1 className="text-5xl font-extrabold text-center mb-12">Explore Features</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl">

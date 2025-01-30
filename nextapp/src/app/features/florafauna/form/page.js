@@ -104,7 +104,7 @@ export default function UploadForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] relative">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#3c6e38] via-[#c8d796] to-[#b0c578] relative">
       <ToastContainer />
 
       {/* Wildlife Icons on Sides */}

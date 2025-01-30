@@ -18,6 +18,13 @@ function AboutUs() {
     return <Loader />;
   }
 
+  const imageUrls = [
+    "https://example.com/image1.jpg", // Replace with your direct image URL
+    "https://example.com/image2.jpg", // Replace with your direct image URL
+    "https://example.com/image3.jpg", // Replace with your direct image URL
+    "https://example.com/image4.jpg", // Replace with your direct image URL
+    "https://example.com/image5.jpg", // Replace with your direct image URL
+  ];
   return (
     <div className="bg-[#D8E3A6] text-[#14470D]">
       {/* Hero Section */}

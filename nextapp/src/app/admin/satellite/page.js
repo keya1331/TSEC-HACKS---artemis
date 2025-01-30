@@ -56,8 +56,8 @@ const SatelliteDetection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E9FBD6] to-[#C9EFA3] flex flex-col items-center justify-center px-6 py-12">
-      <h1 className="text-4xl font-extrabold text-[#2B7A0B] mb-8 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-[#3f7935] to-[#BAD799] flex flex-col items-center justify-center px-6 py-12">
+      <h1 className="text-4xl font-extrabold text-[#BAD699] mb-8 animate-fade-in">
         Satellite Detection
       </h1>
 

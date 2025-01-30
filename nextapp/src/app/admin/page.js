@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaPaw, FaMapMarkedAlt, FaBullhorn } from "react-icons/fa";
+import { FaPaw, FaMapMarkedAlt, FaBullhorn, FaFireExtinguisher } from "react-icons/fa";
 
 export default function AdminDashboard() {
   const [patrolOfficers, setPatrolOfficers] = useState([]);
 
   const highlights = [
     {
-      title: "Wildlife Tracking",
+      title: "Satellite-based Wildfire Monitoring",
       description: "Monitor wildlife movements and threats.",
-      icon: <FaPaw className="text-4xl text-[#081707]" />,
+      icon: <FaFireExtinguisher className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#93d36b] to-[#7fc257]",
     },
     {
@@ -20,7 +20,7 @@ export default function AdminDashboard() {
       bgGradient: "bg-gradient-to-r from-[#a7d97e] to-[#92c76b]",
     },
     {
-      title: "Satellite-based Wildfire Monitoring",
+      title: "Announcements",
       description: "Share updates and conservation news.",
       icon: <FaBullhorn className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#84c16b] to-[#72b059]",

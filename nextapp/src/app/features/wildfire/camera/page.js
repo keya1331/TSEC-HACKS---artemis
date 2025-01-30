@@ -36,7 +36,7 @@ const CameraDetection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#BAD799] to-[#8FCB81] flex flex-col items-center justify-center px-4 py-12 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#2f582c] to-[#d8e3a6] flex flex-col items-center justify-center px-4 py-12 relative">
       {/* Floating Camera Icons */}
       <div className="absolute top-20 left-10 animate-floating">
         <FaCamera className="text-[#237414] text-5xl opacity-60" />
@@ -45,7 +45,7 @@ const CameraDetection = () => {
         <FaCamera className="text-[#237414] text-5xl opacity-60" />
       </div>
 
-      <h1 className="text-4xl font-extrabold text-[#237414] mb-8 animate-fade-in">
+      <h1 className="text-4xl font-extrabold text-[#BAD799] mb-8 animate-fade-in">
         Camera Detection
       </h1>
 

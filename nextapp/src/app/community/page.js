@@ -7,7 +7,7 @@ export default function Community() {
   return (
     <div className="bg-gradient-to-br from-[#d8e3a6] to-[#b0c578] min-h-screen text-[#084C20]">
       {/* Section 1: Wildlife Species Spotlight */}
-      <section className="py-16 bg-[#c8d796]">
+      <section className="py-16 bg-gradient-to-b from-[#4a803d] to-[#c8d796]">
       <h2 className="text-4xl font-bold text-center mb-12">Wildlife Species Spotlight</h2>
       
       <div className="flex flex-wrap justify-center gap-8">

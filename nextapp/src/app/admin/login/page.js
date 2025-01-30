@@ -88,7 +88,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#BAD799] text-[#081707] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#3f7935] to-[#BAD799] text-[#081707] px-4">
       <div className="bg-[#F5F5F5] p-8 rounded-lg shadow-xl w-full max-w-md border border-[#6DBE47]">
         <h2 className="text-4xl font-extrabold text-center mb-6 text-[#237414] tracking-wide">
           Welcome Back

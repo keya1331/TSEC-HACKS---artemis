@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Home() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#BAD799] to-[#8FCB81] flex flex-col justify-center items-center py-12">
+        <div className="min-h-screen bg-gradient-to-br from-[#0b1a0a] via-[#c8d796] to-[#b0c578] flex flex-col justify-center items-center py-12">
             <h1 className="text-5xl font-extrabold text-center text-[#081707] mb-12">
                 Welcome to our Wildfire Detection System
             </h1>
@@ -40,7 +40,7 @@ export default function Home() {
                 </div>
 
                 {/* Satellite Detection Card */}
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl fade-in">
+                {/* <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl fade-in">
                     <div className="relative w-full h-72 border-4 border-[#081707] rounded-t-xl">
                         <Image
                             src="/images/104887722-ventura_fires_nasa_image.webp"
@@ -59,14 +59,9 @@ export default function Home() {
                             combined with machine learning techniques to accurately identify and monitor fire hotspots, 
                             aiding in early detection and prevention efforts.
                         </p>
-                        <Link
-                            href="wildfire/satellite"
-                            className="block text-center bg-gradient-to-r from-[#6DBE47] to-[#8FCB81] text-white font-semibold px-4 py-3 rounded-md hover:from-[#5AA83C] hover:to-[#76BF58] transition duration-300"
-                        >
-                            Go to Satellite Detection
-                        </Link>
+                        
                     </div>
-                </div>
+                </div> */}
 
                 {/* Wildfire Alert Card */}
                 {/* <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl fade-in">

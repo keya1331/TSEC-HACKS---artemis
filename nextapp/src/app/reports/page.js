@@ -90,14 +90,15 @@ export default function UploadForm() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] flex flex-col items-center justify-start pt-10 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#22381e] via-[#72cc48] to-[#BAD799] flex flex-col items-center justify-start pt-24 relative">
       <ToastContainer />
 
+      {/* Form Section */}
       <form
         onSubmit={handleUpload}
-        className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg mb-10"
+        className="bg-[#F5FBEF] p-8 rounded-xl shadow-lg w-full max-w-lg mb-12 border border-[#6DBE47]"
       >
-        <h2 className="text-2xl font-bold text-center text-[#084C20] mb-6">
+        <h2 className="text-3xl font-bold text-center text-[#084C20] mb-6">
           Wildlife Upload Form
         </h2>
         <input
@@ -105,15 +106,15 @@ export default function UploadForm() {
           placeholder="Name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
+          className="mb-4 p-3 border border-[#BAD799] rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         />
         <select
           value={formData.type}
           onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
+          className="mb-4 p-3 border border-[#BAD799] rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         >
           <option value="Flora">Flora</option>
-          <option value="Faunna">Faunna</option>
+          <option value="Fauna">Fauna</option>
         </select>
         <textarea
           placeholder="Message"
@@ -121,12 +122,12 @@ export default function UploadForm() {
           onChange={(e) =>
             setFormData({ ...formData, message: e.target.value })
           }
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
+          className="mb-4 p-3 border border-[#BAD799] rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         />
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
-          className="mb-4 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
+          className="mb-4 p-3 border border-[#BAD799] rounded-lg w-full focus:ring-2 focus:ring-[#6DBE47] focus:outline-none"
         />
         <button
           type="button"
@@ -147,8 +148,8 @@ export default function UploadForm() {
       </form>
 
       {/* Wall of Threats */}
-      <div className="w-full max-w-6xl px-4">
-        <h2 className="text-2xl font-bold text-[#084C20] mb-6 text-center">
+      {/* <div className="w-full max-w-6xl px-4">
+        <h2 className="text-3xl font-bold text-[#084C20] mb-6 text-center">
           Anonymous Wildlife Threats
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -156,7 +157,7 @@ export default function UploadForm() {
             reports.map((report, index) => (
               <div
                 key={index}
-                className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex items-start gap-4"
+                className="bg-[#F5FBEF] p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex items-start gap-4 border border-[#BAD799]"
               >
                 <img
                   src={placeholderImages[index % placeholderImages.length]}
@@ -168,17 +169,17 @@ export default function UploadForm() {
                     {report.name}
                   </h3>
                   <p className="text-sm text-[#237414] italic">{report.type}</p>
-                  <p className="text-gray-700 mt-2">{report.message}</p>
+                  <p className="text-[#084C20] mt-2">{report.message}</p>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center col-span-3">
+            <p className="text-[#084C20] text-center col-span-3">
               No threats reported yet.
             </p>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
