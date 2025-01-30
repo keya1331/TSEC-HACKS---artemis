@@ -164,115 +164,117 @@ function SignupPage() {
             onSubmit={isOtpSent ? handleSubmit : handleGetOtp}
             className="space-y-5"
           >
-            {/* Full Name */}
-            <div>
-              <label className="block text-sm font-medium text-[#081707]">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                placeholder="John Doe"
-              />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-2">{errors.name}</p>
-              )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Full Name */}
+              <div>
+                <label className="block text-sm font-medium text-[#081707]">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                  placeholder="John Doe"
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-2">{errors.name}</p>
+                )}
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-[#081707]">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                  placeholder="example@example.com"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-2">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Mobile Number */}
+              <div>
+                <label className="block text-sm font-medium text-[#081707]">
+                  Mobile Number
+                </label>
+                <input
+                  type="text"
+                  name="mobileno"
+                  value={formData.mobileno}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                  placeholder="1234567890"
+                />
+                {errors.mobileno && (
+                  <p className="text-red-500 text-xs mt-2">{errors.mobileno}</p>
+                )}
+              </div>
+
+              {/* Aadhar Number */}
+              <div>
+                <label className="block text-sm font-medium text-[#081707]">
+                  Aadhar Number
+                </label>
+                <input
+                  type="text"
+                  name="aadharno"
+                  value={formData.aadharno}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                  placeholder="123412341234"
+                />
+                {errors.aadharno && (
+                  <p className="text-red-500 text-xs mt-2">{errors.aadharno}</p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-medium text-[#081707]">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                  placeholder="********"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-2">{errors.password}</p>
+                )}
+              </div>
+
+              {/* Confirm Password */}
+              <div>
+                <label className="block text-sm font-medium text-[#081707]">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="repassword"
+                  value={formData.repassword}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                  placeholder="********"
+                />
+                {errors.repassword && (
+                  <p className="text-red-500 text-xs mt-2">{errors.repassword}</p>
+                )}
+              </div>
             </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-[#081707]">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                placeholder="example@example.com"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-2">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Mobile Number */}
-            <div>
-              <label className="block text-sm font-medium text-[#081707]">
-                Mobile Number
-              </label>
-              <input
-                type="text"
-                name="mobileno"
-                value={formData.mobileno}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                placeholder="1234567890"
-              />
-              {errors.mobileno && (
-                <p className="text-red-500 text-xs mt-2">{errors.mobileno}</p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-[#081707]">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                placeholder="********"
-              />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-2">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-sm font-medium text-[#081707]">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                name="repassword"
-                value={formData.repassword}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                placeholder="********"
-              />
-              {errors.repassword && (
-                <p className="text-red-500 text-xs mt-2">{errors.repassword}</p>
-              )}
-            </div>
-
-            {/* Aadhar Number */}
-            <div>
-              <label className="block text-sm font-medium text-[#081707]">
-                Aadhar Number
-              </label>
-              <input
-                type="text"
-                name="aadharno"
-                value={formData.aadharno}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                placeholder="123412341234"
-              />
-              {errors.aadharno && (
-                <p className="text-red-500 text-xs mt-2">{errors.aadharno}</p>
-              )}
-            </div>
-
-            {/* OTP */}
+            {/* OTP Field - Full Width */}
             {isOtpSent && (
               <div>
                 <label className="block text-sm font-medium text-[#081707]">
