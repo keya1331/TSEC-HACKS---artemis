@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiSearch } from "react-icons/fi";
+import Link from "next/link";
 
 export default function ThreadTable() {
   const [threads, setThreads] = useState([]);
@@ -95,8 +96,8 @@ export default function ThreadTable() {
                         />
                       </div>
                     </td>
-                    <td className="p-4">
-                      {thread.location.latitude}, {thread.location.longitude}
+                    <td className="p-4 text-blue-600">
+                    <Link href={`https://maps.google.com/?q=${thread.location.latitude},${thread.location.longitude}`} target='_blank'>{thread.location.latitude}, {thread.location.longitude}</Link>
                     </td>
                   </tr>
                 ))
