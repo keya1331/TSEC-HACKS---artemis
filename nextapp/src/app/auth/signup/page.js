@@ -13,6 +13,12 @@ function SignupPage() {
     password: "",
     repassword: "",
     aadharno: "",
+    passportno: "",
+    nationality: "Indian",
+    location: {
+      latitude: null,
+      longitude: null
+    }
   });
   const [errors, setErrors] = useState({});
   const [debouncedData, setDebouncedData] = useState(formData);
@@ -26,6 +32,7 @@ function SignupPage() {
     const emailRegex = /^\S+@\S+\.\S+$/;
     const mobileRegex = /^\d{10}$/;
     const aadharRegex = /^\d{12}$/;
+    const passportRegex = /^[A-Z0-9]{8,}$/;
 
     if (!data.name.trim()) newErrors.name = "Name is required";
     if (!emailRegex.test(data.email)) newErrors.email = "Invalid email address";
@@ -35,8 +42,12 @@ function SignupPage() {
       newErrors.password = "Password must be at least 8 characters";
     if (data.password !== data.repassword)
       newErrors.repassword = "Passwords do not match";
-    if (!aadharRegex.test(data.aadharno))
-      newErrors.aadharno = "Invalid 12-digit Aadhar number";
+    
+    if (data.nationality === 'Indian') {
+      if (!aadharRegex.test(data.aadharno)) newErrors.aadharno = "Invalid 12-digit Aadhar number";
+    } else {
+      if (!passportRegex.test(data.passportno)) newErrors.passportno = "Invalid passport number";
+    }
 
     return newErrors;
   };
@@ -50,6 +61,26 @@ function SignupPage() {
 
     return () => clearTimeout(debounceTimeout);
   }, [debouncedData]);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setFormData(prev => ({
+            ...prev,
+            location: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            }
+          }));
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          toast.error("Could not get location. Using default coordinates.");
+        }
+      );
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -120,6 +151,12 @@ function SignupPage() {
             password: "",
             repassword: "",
             aadharno: "",
+            passportno: "",
+            nationality: "Indian",
+            location: {
+              latitude: null,
+              longitude: null
+            }
           });
           setErrors({});
           setIsOtpSent(false);
@@ -219,23 +256,52 @@ function SignupPage() {
                 )}
               </div>
 
-              {/* Aadhar Number */}
+              {/* Nationality Selection */}
               <div>
-                <label className="block text-sm font-medium text-[#081707]">
-                  Aadhar Number
-                </label>
-                <input
-                  type="text"
-                  name="aadharno"
-                  value={formData.aadharno}
+                <label className="block text-sm font-medium text-[#081707]">Nationality</label>
+                <select
+                  name="nationality"
+                  value={formData.nationality}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
-                  placeholder="123412341234"
-                />
-                {errors.aadharno && (
-                  <p className="text-red-500 text-xs mt-2">{errors.aadharno}</p>
-                )}
+                >
+                  <option value="Indian">Indian</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
+
+              {/* Conditional rendering of Aadhar/Passport */}
+              {formData.nationality === 'Indian' ? (
+                <div>
+                  <label className="block text-sm font-medium text-[#081707]">Aadhar Number</label>
+                  <input
+                    type="text"
+                    name="aadharno"
+                    value={formData.aadharno}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                    placeholder="123412341234"
+                  />
+                  {errors.aadharno && (
+                    <p className="text-red-500 text-xs mt-2">{errors.aadharno}</p>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm font-medium text-[#081707]">Passport Number</label>
+                  <input
+                    type="text"
+                    name="passportno"
+                    value={formData.passportno}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-4 py-2 bg-white border border-[#6DBE47] rounded-lg focus:ring-[#237414] focus:outline-none"
+                    placeholder="AB1234567"
+                  />
+                  {errors.passportno && (
+                    <p className="text-red-500 text-xs mt-2">{errors.passportno}</p>
+                  )}
+                </div>
+              )}
 
               {/* Password */}
               <div>

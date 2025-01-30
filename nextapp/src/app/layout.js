@@ -6,6 +6,7 @@ import "./globals.css";
 import Footer from "./components/common/Footer";
 import Navbar from "./components/common/Navbar";
 import { Toaster } from "react-hot-toast";
+import { LocationProvider } from "@/contexts/LocationContext";
 
 // import { useState, useEffect } from "react";
 // import Loader from "./components/common/Loader";
@@ -48,13 +49,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       {/* Navbar */}
-      <Navbar />
-      
-      
-        <Toaster />
-        {children}
-        <Footer />
+        <LocationProvider>
+          <Navbar />
+          <Toaster />
+          {children}
+          <Footer />
+        </LocationProvider>
       </body>
     </html>
   );
