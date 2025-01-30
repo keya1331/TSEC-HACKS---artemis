@@ -46,7 +46,7 @@ export default function ThreadTable() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAF5] text-[#081707] px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-[#237414] to-[#bad699] text-[#081707] px-6 py-24">
       <ToastContainer />
       
       {/* Search Bar */}
