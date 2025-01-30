@@ -111,7 +111,7 @@ export default function AdminDashboard() {
               Track recent wildlife activity and updates.
             </p>
           </button>
-          <button onClick={() => (window.location.href = "/reports/threat")} className="bg-gradient-to-r from-[#a7d97e] to-[#92c76b] text-black p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
+          <button onClick={() => (window.location.href = "/admin/show/threats")} className="bg-gradient-to-r from-[#a7d97e] to-[#92c76b] text-black p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
             <h2 className="text-lg font-semibold mb-4">Threat Reports</h2>
             <p className="text-4xl font-bold mb-4">87</p>
             <p className="text-sm">
