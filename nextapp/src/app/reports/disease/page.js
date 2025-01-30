@@ -43,16 +43,19 @@ const DiseaseDetection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFA07A] to-[#FF6347] flex flex-col items-center justify-center px-4 py-12 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#48843d] to-[#BAD799] flex flex-col items-center justify-center px-4 py-12 relative">
+      {/* Fixed Navbar Spacer */}
+      <div className="h-16 w-full"></div>
+
       {/* Floating Disease Icons */}
       <div className="absolute top-20 left-10 animate-floating">
-        <FaDisease className="text-[#8B0000] text-5xl opacity-60" />
+        <FaDisease className="text-[#237414] text-5xl opacity-60" />
       </div>
       <div className="absolute bottom-20 right-10 animate-floating-reverse">
-        <FaDisease className="text-[#8B0000] text-5xl opacity-60" />
+        <FaDisease className="text-[#237414] text-5xl opacity-60" />
       </div>
 
-      <h1 className="text-4xl font-extrabold text-[#8B0000] mb-8 animate-fade-in">
+      <h1 className="text-4xl font-extrabold text-[#084C20] mb-8 animate-fade-in">
         Disease Detection
       </h1>
 
@@ -60,7 +63,7 @@ const DiseaseDetection = () => {
       <div className="flex flex-col items-center mb-6">
         <label
           htmlFor="imageInput"
-          className="cursor-pointer px-6 py-3 bg-[#8B0000] text-white font-semibold rounded-md shadow-md flex items-center hover:bg-[#A52A2A] transition duration-300"
+          className="cursor-pointer px-6 py-3 bg-[#237414] text-[#BAD799] font-semibold rounded-md shadow-md flex items-center hover:bg-[#1A5F10] transition duration-300"
         >
           <svg
             className="w-6 h-6 mr-2"
@@ -83,27 +86,28 @@ const DiseaseDetection = () => {
 
       {/* Image Preview */}
       <div className="flex justify-center items-center mb-6">
-        <div className="relative w-96 h-80 flex justify-center items-center border-4 border-dashed border-[#8B0000] bg-white rounded-lg shadow-md">
-          {preview ? (
-            <img src={preview} alt="Uploaded" className="w-full h-full object-cover rounded-md" />
-          ) : (
-            <p className="text-gray-500">No Image Uploaded</p>
-          )}
-        </div>
-      </div>
+  <div className="relative w-96 h-80 flex justify-center items-center border-4 border-solid border-[#237414] bg-white rounded-lg shadow-md">
+    {preview ? (
+      <img src={preview} alt="Uploaded" className="w-full h-full object-cover rounded-md" />
+    ) : (
+      <p className="text-gray-500">No Image Uploaded</p>
+    )}
+  </div>
+</div>
+
 
       {/* Detect Button */}
       <div className="flex justify-center mb-6">
         <button
           onClick={handlePrediction}
-          className="px-6 py-3 bg-[#8B0000] text-white font-semibold rounded-md hover:bg-[#A52A2A] shadow-md transition duration-300"
+          className="px-6 py-3 bg-[#237414] text-[#BAD799] font-semibold rounded-md hover:bg-[#1A5F10] shadow-md transition duration-300"
         >
           Detect Disease
         </button>
       </div>
 
       {/* Prediction Result */}
-      <div className="text-2xl font-bold text-[#8B0000] mb-6">{prediction}</div>
+      <div className="text-2xl font-bold text-[#084C20] mb-6">{prediction}</div>
 
       <style jsx>{`
         @keyframes fadeIn {
@@ -115,7 +119,7 @@ const DiseaseDetection = () => {
         }
         @keyframes floating {
           0% { transform: translateY(0px); }
-          50% { transform: translateY(15px); }
+          50% { transform: translateY(-15px); }
           100% { transform: translateY(0px); }
         }
         .animate-floating {
