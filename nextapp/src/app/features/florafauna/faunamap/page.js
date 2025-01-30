@@ -39,7 +39,7 @@ const FaunaMap = () => {
               key={index}
               position={[thread.location.latitude, thread.location.longitude]}
               icon={L.icon({
-                iconUrl: "/images/fauna.png",
+                iconUrl: "/images/paws.png",
                 iconSize: [41, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],

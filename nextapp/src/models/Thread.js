@@ -7,7 +7,7 @@ const threadSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: [ "Flora", "Faunna"],
+    enum: [ "Flora", "Faunna","Wildfire"],
     required: true,
   },
   image: {

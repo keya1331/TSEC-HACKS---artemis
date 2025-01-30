@@ -114,6 +114,7 @@ export default function UploadForm() {
         >
           <option value="Flora">Flora</option>
           <option value="Faunna">Faunna</option>
+          <option value="Wildfire">Wildfire</option>
         </select>
         <textarea
           placeholder="Message"

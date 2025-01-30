@@ -1,12 +1,15 @@
 'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 const RangerPage = () => {
-  const [jobs, setJobs] = useState([]);
-  const router = useRouter();
+  useEffect(() => {
+    const email = localStorage.getItem('rangerEmail');
+    if (!email) {
+      window.location.href = '/ranger/login';
+    }
+  }, []);
 
-  const fetchJobs = async () => {
+  const checkIfBusy = async () => {
     const email = localStorage.getItem('rangerEmail');
     if (!email) {
       console.error('No ranger email found in local storage');
@@ -14,7 +17,7 @@ const RangerPage = () => {
     }
 
     try {
-      const response = await fetch('/api/admin/rangers/jobs', {
+      const response = await fetch('/api/ranger/isbusy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,9 +26,13 @@ const RangerPage = () => {
       });
 
       const data = await response.json();
-      setJobs(data.jobs);
+      if (data.isBusy) {
+        window.location.href = 'ranger/complete/task';
+      } else {
+        alert('No work pending');
+      }
     } catch (error) {
-      console.error('Error fetching jobs:', error);
+      console.error('Error checking if ranger is busy:', error);
     }
   };
 
@@ -36,33 +43,18 @@ const RangerPage = () => {
       </h1>
       <div className="flex space-x-4">
         <button
-          onClick={() => router.push('/admin/threats')}
+          onClick={() => window.location.href = '/admin/threats'}
           className="px-6 py-3 bg-[#6DBE47] text-white font-semibold rounded-md hover:bg-[#237414] transition duration-300"
         >
           Go to Threats
         </button>
         <button
-          onClick={fetchJobs}
+          onClick={checkIfBusy}
           className="px-6 py-3 bg-[#6DBE47] text-white font-semibold rounded-md hover:bg-[#237414] transition duration-300"
         >
-          Fetch My Jobs
+          Check If Busy
         </button>
       </div>
-
-      {jobs.length > 0 && (
-        <section className="mt-8 w-full max-w-4xl">
-          <h2 className="text-2xl font-bold text-center text-[#081707] mb-4">
-            My Jobs
-          </h2>
-          <ul className="list-disc list-inside bg-white p-4 rounded-lg shadow-md">
-            {jobs.map((job) => (
-              <li key={job._id} className="text-lg text-[#081707]">
-                {job.description}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </div>
   );
 };
