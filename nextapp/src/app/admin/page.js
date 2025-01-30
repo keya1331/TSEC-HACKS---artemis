@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/dist/server/api-utils";
 import React, { useState } from "react";
 import { FaPaw, FaMapMarkedAlt, FaBullhorn, FaFireExtinguisher } from "react-icons/fa";
 
@@ -12,18 +13,21 @@ export default function AdminDashboard() {
       description: "Monitor wildlife movements and threats.",
       icon: <FaFireExtinguisher className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#93d36b] to-[#7fc257]",
+      redirect: "/",
     },
     {
       title: "Map Navigation",
       description: "Navigate and analyze wildlife hotspots.",
       icon: <FaMapMarkedAlt className="text-4xl text-black" />,
       bgGradient: "bg-gradient-to-r from-[#a7d97e] to-[#92c76b]",
+      redirect: "/admin/threats",
     },
     {
-      title: "Announcements",
+      title: "Broadcast Alerts",
       description: "Share updates and conservation news.",
       icon: <FaBullhorn className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#84c16b] to-[#72b059]",
+      redirect: "/admin/broadcast",
     },
   ];
 
@@ -79,7 +83,7 @@ export default function AdminDashboard() {
         {/* Highlights Section */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {highlights.map((highlight, index) => (
-            <div
+            <button onClick={() => (window.location.href = highlight.redirect)}
               key={index}
               className={`${highlight.bgGradient} p-6 rounded-xl shadow-lg flex items-center hover:scale-105 transform transition-all duration-300`}
             >
@@ -92,13 +96,13 @@ export default function AdminDashboard() {
                   {highlight.description}
                 </p>
               </div>
-            </div>
+            </button>
           ))}
         </section>
 
         {/* Wildlife Stats */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-gradient-to-r from-[#93d36b] to-[#7fc257] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
+          <button onClick={() => (window.location.href = "/features/florafauna/form")} className="bg-gradient-to-r from-[#93d36b] to-[#7fc257] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
             <h2 className="text-lg font-semibold mb-4">
               Total Wildlife Sightings
             </h2>
@@ -106,21 +110,21 @@ export default function AdminDashboard() {
             <p className="text-sm">
               Track recent wildlife activity and updates.
             </p>
-          </div>
-          <div className="bg-gradient-to-r from-[#a7d97e] to-[#92c76b] text-black p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
+          </button>
+          <button onClick={() => (window.location.href = "/reports/threat")} className="bg-gradient-to-r from-[#a7d97e] to-[#92c76b] text-black p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
             <h2 className="text-lg font-semibold mb-4">Threat Reports</h2>
             <p className="text-4xl font-bold mb-4">87</p>
             <p className="text-sm">
               Monitor potential threats to wildlife habitats.
             </p>
-          </div>
-          <div className="bg-gradient-to-r from-[#84c16b] to-[#72b059] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
+          </button>
+          <button onClick={() => (window.location.href = "/admin/satellite")} className="bg-gradient-to-r from-[#84c16b] to-[#72b059] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
             <h2 className="text-lg font-semibold mb-4">
               Satellite-based Wildfire Monitoring
             </h2>
             <p className="text-4xl font-bold mb-4">15</p>
             <p className="text-sm">Stay updated with conservation efforts.</p>
-          </div>
+          </button>
         </section>
 
         {/* Fetch Patrol Officers Button */}
