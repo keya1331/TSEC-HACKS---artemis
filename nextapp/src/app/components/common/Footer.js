@@ -10,7 +10,7 @@ const Footer = () => {
         {/* Logo and Description */}
         <div className="text-center md:text-left">
           <img
-            src="/images/logo-white.png" // Replace with your logo image
+            src="/images/logo.png" // Replace with your logo image
             alt="Logo"
             className="w-16 h-16 mx-auto md:mx-0 mb-4 shadow-md"
           />

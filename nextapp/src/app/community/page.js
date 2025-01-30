@@ -141,21 +141,39 @@ export default function Community() {
   </div>
 </section>
 
-      {/* Section 5: Projects and Campaigns */}
-      <section className="py-16 bg-[#8FCB81] text-[#084c20]">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-8">Projects, Campaigns, and Petitions</h2>
-          <p className="text-lg mb-8">
-            Join hands with us! Volunteer, sign petitions, and donate to ongoing projects that aim to make a difference in wildlife conservation.
-          </p>
-          <a
-            href="#"
-            className="inline-block px-8 py-4 bg-[#6DBE47] text-white rounded-lg font-bold hover:bg-[#5CAA3F] transition-all"
-          >
-            Get Involved
-          </a>
-        </div>
-      </section>
+     {/* Section 5: Projects and Campaigns */}
+<section className="py-16 bg-[#8FCB81] text-[#084c20]">
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      {/* Left Side: Text Details */}
+      <div className="space-y-6">
+        <h2 className="text-4xl font-bold mb-4">Projects, Campaigns, and Petitions</h2>
+        <p className="text-lg leading-relaxed">
+          Join hands with us! Volunteer, sign petitions, and donate to ongoing projects that aim to make a difference in wildlife conservation.
+        </p>
+        <p className="text-lg leading-relaxed font-semibold">
+          Scan this QR code to get real-time updates and stay connected with us.
+        </p>
+        <a
+          href="#"
+          className="inline-block px-8 py-4 bg-[#6DBE47] text-white rounded-lg font-bold hover:bg-[#5CAA3F] transition-all"
+        >
+          Get Involved
+        </a>
+      </div>
+
+      {/* Right Side: QR Code */}
+      <div className="flex justify-center md:justify-end">
+        <img
+          src="/qr-code.svg"
+          alt="QR Code"
+          className="w-48 h-48 md:w-64 md:h-64 rounded-md shadow-md"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 }
