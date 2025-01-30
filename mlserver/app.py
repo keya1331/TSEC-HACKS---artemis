@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import pandas as pd
+import joblib
 
 from wildfire_detection.src.satellite_functions import satellite_cnn_predict
 from wildfire_detection.src.camera_functions import camera_cnn_predict
@@ -351,6 +352,40 @@ def create_df_img(filepath):
     filepath = pd.Series(filepath, name='Filepath').astype(str)
     labels = pd.Series(labels, name='Label')
     return pd.concat([filepath, labels], axis=1)
+
+# Load the risk prioritiser models
+vectorizer = joblib.load(r'E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\risk_prioritiser\models\vectorizer_with_weights.pkl')
+svm_model = joblib.load(r'E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\risk_prioritiser\models\svm_model_with_weights.pkl')
+label_encoder = joblib.load(r'E:\Programs\TSEC\TSEC-HACKS---artemis\mlserver\risk_prioritiser\models\label_encoder_with_weights.pkl')
+
+@app.route("/classify_threats", methods=["POST"])
+def classify_threats():
+    try:
+        threats = request.json
+        if not threats:
+            return jsonify({"error": "No threats provided"}), 400
+
+        # Extract messages from threats
+        messages = [threat['message'] for threat in threats]
+        
+        # Transform messages using vectorizer
+        messages_vec = vectorizer.transform(messages)
+        
+        # Get predictions
+        predictions = svm_model.predict(messages_vec)
+        
+        # Convert numeric predictions to labels
+        priorities = label_encoder.inverse_transform(predictions)
+        
+        # Add priorities to threats
+        for threat, priority in zip(threats, priorities):
+            threat['priority'] = priority
+            
+        return jsonify(threats), 200
+        
+    except Exception as e:
+        print(f"Error in classify_threats: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     init_db()
