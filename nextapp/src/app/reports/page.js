@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "tailwindcss/tailwind.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -56,7 +56,6 @@ export default function UploadForm() {
         });
         setFile(null);
 
-        // Simulate adding the new report to the wall
         setReports((prev) => [
           ...prev,
           { name: formData.name, message: formData.message, type: formData.type },
@@ -83,19 +82,17 @@ export default function UploadForm() {
     }
   };
 
+  const placeholderImages = [
+    "/public/avatar1.png",
+    "/public/avatar2.png",
+    "/public/avatar3.png",
+    "/public/avatar4.png",
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] flex flex-col items-center justify-start pt-10 relative">
       <ToastContainer />
 
-      {/* Wildlife Icons on Sides */}
-      <div className="absolute top-20 left-10 hidden lg:block">
-        <FaPaw className="text-8xl text-[#6DBE47] animate-pulse" />
-      </div>
-      <div className="absolute bottom-20 right-10 hidden lg:block">
-        <FaPaw className="text-8xl text-[#84C16B] animate-bounce" />
-      </div>
-
-      {/* Form Section */}
       <form
         onSubmit={handleUpload}
         className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg mb-10"
@@ -159,13 +156,20 @@ export default function UploadForm() {
             reports.map((report, index) => (
               <div
                 key={index}
-                className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex items-start gap-4"
               >
-                <h3 className="text-lg font-bold text-[#084C20]">
-                  {report.name}
-                </h3>
-                <p className="text-sm text-[#237414] italic">{report.type}</p>
-                <p className="text-gray-700 mt-2">{report.message}</p>
+                <img
+                  src={placeholderImages[index % placeholderImages.length]}
+                  alt={`Profile ${index + 1}`}
+                  className="w-12 h-12 rounded-full border-2 border-[#6DBE47]"
+                />
+                <div>
+                  <h3 className="text-lg font-bold text-[#084C20]">
+                    {report.name}
+                  </h3>
+                  <p className="text-sm text-[#237414] italic">{report.type}</p>
+                  <p className="text-gray-700 mt-2">{report.message}</p>
+                </div>
               </div>
             ))
           ) : (

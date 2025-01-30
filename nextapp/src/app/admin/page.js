@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { FaPaw, FaMapMarkedAlt, FaBullhorn } from "react-icons/fa";
 
 export default function AdminDashboard() {
+  const [patrolOfficers, setPatrolOfficers] = useState([]);
+
   const highlights = [
     {
       title: "Wildlife Tracking",
@@ -18,7 +20,7 @@ export default function AdminDashboard() {
       bgGradient: "bg-gradient-to-r from-[#a7d97e] to-[#92c76b]",
     },
     {
-      title: "Announcements",
+      title: "Satellite-based Wildfire Monitoring",
       description: "Share updates and conservation news.",
       icon: <FaBullhorn className="text-4xl text-[#081707]" />,
       bgGradient: "bg-gradient-to-r from-[#84c16b] to-[#72b059]",
@@ -33,8 +35,37 @@ export default function AdminDashboard() {
     "https://images.unsplash.com/photo-1605369172944-5e4fae97d8c5",
   ];
 
+  const fetchPatrolOfficers = async () => {
+    try {
+      const response = await fetch("/api/admin/rangers/get");
+      const data = await response.json();
+      setPatrolOfficers(data.data);
+    } catch (error) {
+      console.error("Error fetching patrol officers:", error);
+    }
+  };
+
+  const handleRangerSelect = async (ranger) => {
+    console.log("Selected Ranger:", ranger);
+
+    try {
+      const response = await fetch("/api/admin/rangers/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: ranger.email }),
+      });
+
+      const result = await response.json();
+      console.log("API Response:", result);
+    } catch (error) {
+      console.error("Error sending ranger data:", error);
+    }
+  };
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] p-6">
+    <div className="pt-32 min-h-screen bg-gradient-to-br from-[#d8e3a6] via-[#c8d796] to-[#b0c578] p-6">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
           <h1 className="text-4xl font-bold text-center text-[#081707]">
@@ -57,7 +88,9 @@ export default function AdminDashboard() {
                 <h2 className="text-lg font-semibold text-[#081707]">
                   {highlight.title}
                 </h2>
-                <p className="text-sm text-[#081707]">{highlight.description}</p>
+                <p className="text-sm text-[#081707]">
+                  {highlight.description}
+                </p>
               </div>
             </div>
           ))}
@@ -66,21 +99,90 @@ export default function AdminDashboard() {
         {/* Wildlife Stats */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <div className="bg-gradient-to-r from-[#93d36b] to-[#7fc257] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
-            <h2 className="text-lg font-semibold mb-4">Total Wildlife Sightings</h2>
+            <h2 className="text-lg font-semibold mb-4">
+              Total Wildlife Sightings
+            </h2>
             <p className="text-4xl font-bold mb-4">1,245</p>
-            <p className="text-sm">Track recent wildlife activity and updates.</p>
+            <p className="text-sm">
+              Track recent wildlife activity and updates.
+            </p>
           </div>
           <div className="bg-gradient-to-r from-[#a7d97e] to-[#92c76b] text-black p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
             <h2 className="text-lg font-semibold mb-4">Threat Reports</h2>
             <p className="text-4xl font-bold mb-4">87</p>
-            <p className="text-sm">Monitor potential threats to wildlife habitats.</p>
+            <p className="text-sm">
+              Monitor potential threats to wildlife habitats.
+            </p>
           </div>
           <div className="bg-gradient-to-r from-[#84c16b] to-[#72b059] text-[#081707] p-6 rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300">
-            <h2 className="text-lg font-semibold mb-4">Announcements</h2>
+            <h2 className="text-lg font-semibold mb-4">
+              Satellite-based Wildfire Monitoring
+            </h2>
             <p className="text-4xl font-bold mb-4">15</p>
             <p className="text-sm">Stay updated with conservation efforts.</p>
           </div>
         </section>
+
+        {/* Fetch Patrol Officers Button */}
+        <div className="text-center mb-10">
+          <button
+            onClick={fetchPatrolOfficers}
+            className="px-6 py-3 bg-[#6DBE47] text-white font-semibold rounded-md hover:bg-[#237414] transition duration-300"
+          >
+            Fetch Patrol Officers
+          </button>
+        </div>
+
+        {/* Display Patrol Officers */}
+        {patrolOfficers.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-2xl font-bold text-center text-[#081707] mb-4">
+              Patrol Officers
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                  <tr>
+                    <th className="py-2 px-4 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700">
+                      Name
+                    </th>
+                    <th className="py-2 px-4 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700">
+                      Email
+                    </th>
+                    <th className="py-2 px-4 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700">
+                      Mobile No
+                    </th>
+                    <th className="py-2 px-4 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {patrolOfficers.map((officer) => (
+                    <tr
+                      key={officer._id}
+                      className="cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleRangerSelect(officer)}
+                    >
+                      <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">
+                        {officer.name}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">
+                        {officer.email}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">
+                        {officer.mobileno}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">
+                        {officer.isBusy ? "Busy" : "Available"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
 
         {/* Photo Highlights */}
         <section>
