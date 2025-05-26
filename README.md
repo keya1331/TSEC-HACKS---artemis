@@ -34,11 +34,11 @@ i shaped the experience to speak calm, clarity, and care.
 > here’s a peek into the visual story ↓  
 
 <p align="center">
-  <img src="screens/home.jpg" alt="home" width="18%"/>
-  <img src="screens/gallery.jpg" alt="gallery" width="18%"/>
-  <img src="screens/footer.jpg" alt="footer" width="18%"/>
-  <img src="screens/cards.jpg" alt="cards" width="18%"/>
-  <img src="screens/loading.jpg" alt="loading" width="18%"/>
+  <img src="screens/home.jpg" alt="home" height="150px"/>
+  <img src="screens/gallery.jpg" alt="gallery" height="150px"/>
+  <img src="screens/footer.jpg" alt="footer" height="150px"/>
+  <img src="screens/cards.jpg" alt="cards" height="150px"/>
+  <img src="screens/loading.jpg" alt="loading" height="150px"/>
 </p>
 
 ---
