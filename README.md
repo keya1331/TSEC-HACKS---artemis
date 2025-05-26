@@ -33,11 +33,13 @@ i shaped the experience to speak calm, clarity, and care.
 
 > here’s a peek into the visual story ↓  
 
-<img src="screens/home.jpg" alt="wildshield home screen" width="100%"/>  
-<img src="screens/gallery.jpg" alt="gallery page" width="100%"/>  
-<img src="screens/footer.jpg" alt="footer section" width="100%"/>  
-<img src="screens/cards.jpg" alt="species cards" width="100%"/>  
-<img src="screens/loading.jpg" alt="loading screen" width="100%"/>
+<p align="center">
+  <img src="screens/home.jpg" alt="home" width="18%"/>
+  <img src="screens/gallery.jpg" alt="gallery" width="18%"/>
+  <img src="screens/footer.jpg" alt="footer" width="18%"/>
+  <img src="screens/cards.jpg" alt="cards" width="18%"/>
+  <img src="screens/loading.jpg" alt="loading" width="18%"/>
+</p>
 
 ---
 
