@@ -1,4 +1,4 @@
-# wild 
+# wildshield
 a platform for reporting wildlife threats: real-time, community-powered, ai-backed.
 
 ---
