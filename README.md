@@ -1,17 +1,17 @@
 # wild 
-a platform for reporting wildlife threats — real-time, community-powered, ai-backed.
+a platform for reporting wildlife threats: real-time, community-powered, ai-backed.
 
 ---
 
 ## why it exists  
 response to fires, poaching, and distress is often too slow.  
-we built this to bridge the silence — between tourists, locals, and NGOs.
+we built this to bridge the silence between tourists, locals, and NGOs.
 
 ---
 
 ## what it does  
 - maps and monitors incidents: fire, poaching, animal behavior  
-- enables real-time reporting — anonymous and verified  
+- enables real-time reporting anonymous and verified  
 - analyzes photos and videos using ai: wildlife, injuries, plant life  
 - predicts fire spread using weather data  
 - tracks animal movement and disease  
@@ -28,7 +28,7 @@ color, motion, layout, flow.
 ---
 
 ## design in action 
-this platform isn’t just built — it’s felt.  
+this platform isn’t just built, it’s felt.  
 i shaped the experience to speak calm, clarity, and care.
 
 > here’s a peek into the visual story ↓  
